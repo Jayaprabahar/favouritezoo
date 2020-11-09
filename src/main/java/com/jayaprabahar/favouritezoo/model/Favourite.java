@@ -3,11 +3,12 @@
  */
 package com.jayaprabahar.favouritezoo.model;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
@@ -26,24 +27,33 @@ import lombok.NoArgsConstructor;
  *
  */
 @Entity
-@Table(uniqueConstraints = { @UniqueConstraint(columnNames = { "roomId", "animalId" }) })
+@Table(uniqueConstraints = { @UniqueConstraint(columnNames = { "room_id", "animal_id" }) })
 @Data
 @NoArgsConstructor
 public class Favourite {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 
-	@Column(name = "room_id", table = "Room")
-	private long roomId;
+	@OneToOne
+	@JoinColumn(name = "room_id")
+	private Room room;
 
-	@Column(name = "animal_id", table = "Animal")
-	private long animalId;
+	@OneToOne
+	@JoinColumn(name = "animal_id")
+	private Animal animal;
 
-	public Favourite(long roomId, long animalId) {
-		this.roomId = roomId;
-		this.animalId = animalId;
+	/**
+	 * @param room2
+	 * @param animal2
+	 */
+	public Favourite(Room room, Animal animal) {
+		this.room = room;
+		this.animal = animal;
 	}
-
+	
+	public Favourite(Animal animal) {
+		this.animal = animal;
+	}
 }

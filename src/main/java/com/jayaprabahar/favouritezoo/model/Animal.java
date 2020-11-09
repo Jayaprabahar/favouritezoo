@@ -9,8 +9,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
-import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import lombok.AllArgsConstructor;
@@ -37,16 +37,18 @@ import lombok.NoArgsConstructor;
 public class Animal {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 
 	private String title;
 
-	@CreationTimestamp
 	@UpdateTimestamp
 	private LocalDateTime located;
 
 	private String type;
 	private long preference;
+
+	@OneToOne(targetEntity = Room.class)
+	private Room room;
 
 }

@@ -5,6 +5,9 @@ package com.jayaprabahar.favouritezoo.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.jayaprabahar.favouritezoo.dto.AnimalDto;
@@ -35,8 +38,8 @@ public class AnimalService {
 		this.animalRepository = animalRepository;
 	}
 
-	public List<Animal> findAllAnimals() {
-		return animalRepository.findAll();
+	public List<Animal> findAllAnimals(String sortingVaraible, String sortingOrder) {
+		return animalRepository.findAll(Sort.by(Direction.fromString(sortingOrder), sortingVaraible));
 	}
 
 	public Animal findAnimalById(Long id) {
@@ -45,8 +48,8 @@ public class AnimalService {
 
 	public Animal createAnimal(AnimalDto newAnimalDto) {
 		return animalRepository.save(
-				Animal.builder().title(newAnimalDto.getTitle())
-					.located(newAnimalDto.getLocated())
+				Animal.builder()
+					.title(newAnimalDto.getTitle())
 					.type(newAnimalDto.getType())
 					.preference(newAnimalDto.getPreference())
 					.build());
@@ -55,7 +58,6 @@ public class AnimalService {
 	public Animal updateAnimal(Long id, AnimalDto newAnimalDto) {
 		return animalRepository.findById(id).map(animal -> {
 			animal.setTitle(newAnimalDto.getTitle());
-			animal.setLocated(newAnimalDto.getLocated());
 			animal.setType(newAnimalDto.getType());
 			animal.setPreference(newAnimalDto.getPreference());
 			return animalRepository.save(animal);
@@ -66,6 +68,14 @@ public class AnimalService {
 		animalRepository.findById(id).ifPresentOrElse(e -> animalRepository.delete(e), () -> {
 			throw new AnimalNotFoundException(id);
 		});
+	}
+
+	/**
+	 * @param pageable
+	 * @return
+	 */
+	public List<Animal> findAllAnimals(Pageable pageable) {
+		return animalRepository.findAll(pageable).toList();
 	}
 
 }

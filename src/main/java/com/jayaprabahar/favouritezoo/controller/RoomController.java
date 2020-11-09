@@ -33,7 +33,7 @@ import com.jayaprabahar.favouritezoo.service.RoomService;
  *
  */
 @RestController
-@RequestMapping("/favouritezoo/rooms")
+@RequestMapping("/rooms")
 public class RoomController {
 
 	private RoomService roomService;

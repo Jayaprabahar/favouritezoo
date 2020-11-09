@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
  * <p> Project : favouritezoo </p>
- * <p> Title : RoomNotFoundException.java </p>
+ * <p> Title : AnimalNotInTheRoomException.java </p>
  * <p> Description: TODO </p>
  * <p> Created: Nov 8, 2020 </p>
  * 
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  *
  */
 @ResponseStatus(HttpStatus.NOT_FOUND)
-public class RoomNotFoundException extends RuntimeException {
+public class AnimalNotInTheRoomException extends RuntimeException {
 
 	/**
 	 * 
@@ -28,8 +28,8 @@ public class RoomNotFoundException extends RuntimeException {
 	/**
 	 * 
 	 */
-	public RoomNotFoundException(Long id) {
-		super(String.format("Could not find room with id %s", id));
+	public AnimalNotInTheRoomException(Long animalId, Long roomId) {
+		super(String.format("Animal %s is not inside the room %s", animalId, roomId));
 	}
 
 }

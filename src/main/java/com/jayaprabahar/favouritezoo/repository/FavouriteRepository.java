@@ -3,8 +3,6 @@
  */
 package com.jayaprabahar.favouritezoo.repository;
 
-import java.util.Optional;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -27,5 +25,9 @@ public interface FavouriteRepository extends JpaRepository<Favourite, Long> {
 	/**
 	 * 
 	 */
-	Optional<Favourite> findByRoomIdAndAnimalId(long roomId, long animalId);
+//	Optional<Favourite> findByRoomIdAndAnimalId(long roomId, long animalId);
+//	
+//	List<Favourite> findAllByAnimalId(long animalId);
+//	
+//	List<Favourite> findAllByRoomIdId(long roomlId);
 }

@@ -1,15 +1,18 @@
 package com.jayaprabahar.favouritezoo.model;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -26,22 +29,21 @@ import lombok.NoArgsConstructor;
  */
 @Entity
 @Data
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class Room {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 	private String title;
 	private Long size;
 
 	@CreationTimestamp
-	@UpdateTimestamp
 	private LocalDateTime created;
 
-	public Room(String title, long size) {
-		this.title = title;
-		this.size = size;
-	}
+	@OneToMany(targetEntity = Animal.class)
+	private List<Animal> animals;
 
 }
