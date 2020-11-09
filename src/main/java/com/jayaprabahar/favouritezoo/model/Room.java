@@ -1,0 +1,47 @@
+package com.jayaprabahar.favouritezoo.model;
+
+import java.time.LocalDateTime;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+/**
+ * <p> Project : favouritezoo </p>
+ * <p> Title : Room.java </p>
+ * <p> Description: TODO </p>
+ * <p> Created: Nov 8, 2020 </p>
+ * 
+ * @since 1.0.0
+ * @version 1.0.0
+ * @author <a href="mailto:jpofficial@gmail.com">Jayaprabahar</a>
+ *
+ */
+@Entity
+@Data
+@NoArgsConstructor
+public class Room {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	private long id;
+	private String title;
+	private Long size;
+
+	@CreationTimestamp
+	@UpdateTimestamp
+	private LocalDateTime created;
+
+	public Room(String title, long size) {
+		this.title = title;
+		this.size = size;
+	}
+
+}
