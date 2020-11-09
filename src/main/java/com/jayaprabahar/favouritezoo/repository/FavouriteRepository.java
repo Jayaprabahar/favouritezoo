@@ -21,13 +21,5 @@ import com.jayaprabahar.favouritezoo.model.Favourite;
  */
 @Repository
 public interface FavouriteRepository extends JpaRepository<Favourite, Long> {
-
-	/**
-	 * 
-	 */
-//	Optional<Favourite> findByRoomIdAndAnimalId(long roomId, long animalId);
-//	
-//	List<Favourite> findAllByAnimalId(long animalId);
-//	
-//	List<Favourite> findAllByRoomIdId(long roomlId);
+	
 }

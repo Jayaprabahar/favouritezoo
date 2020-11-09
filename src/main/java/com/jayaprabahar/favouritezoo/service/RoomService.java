@@ -44,7 +44,7 @@ public class RoomService {
 	}
 
 	public Room createRoom(RoomDto newRoomDto) {
-		return roomRepository.save(new Room(newRoomDto.getTitle(), newRoomDto.getSize()));
+		return roomRepository.save(Room.builder().title(newRoomDto.getTitle()).size(newRoomDto.getSize()).build());
 	}
 
 	public Room updateRoom(Long id, RoomDto newRoomDto) {
