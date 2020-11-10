@@ -3,7 +3,9 @@
  */
 package com.jayaprabahar.favouritezoo.dto;
 
-import java.time.LocalDateTime;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 
 import lombok.Data;
 
@@ -21,9 +23,13 @@ import lombok.Data;
 @Data
 public class AnimalDto {
 
+	@NotNull(message = "Title field is missing")
 	private String title;
-	private LocalDateTime located;
-	private String type = "";
+	
+	@NotBlank(message = "Type field is missing")
+	private String type;
+	
+	@Positive(message = "Preference field is missing")
 	private long preference;
 
 }

@@ -1,0 +1,12 @@
+create sequence hibernate_sequence start with 1 increment by 1
+create table animal (animal_id bigint not null, located timestamp, preference bigint not null, title varchar(255), type varchar(255), room_room_id bigint, primary key (animal_id))
+create table favourite (id integer not null, animal_id bigint, room_id bigint, primary key (id))
+create table room (room_id bigint not null, created timestamp, size bigint, title varchar(255), primary key (room_id))
+create table room_animals (room_room_id bigint not null, animals_animal_id bigint not null)
+alter table favourite add constraint UKm4lsrs7l8faolmk80c27sjgwg unique (room_id, animal_id)
+alter table room_animals add constraint UK_qddblsdqrfokjdypy5viq4du8 unique (animals_animal_id)
+alter table animal add constraint FKn6p68re9ienydi6w047sfsv51 foreign key (room_room_id) references room
+alter table favourite add constraint FKj4u9o7vsli9wn0ocmito8cbey foreign key (animal_id) references animal
+alter table favourite add constraint FK2lmajbet59hiiqjo0nqq19go1 foreign key (room_id) references room
+alter table room_animals add constraint FKd16i5l8qmp641edduwtj5hupn foreign key (animals_animal_id) references animal
+alter table room_animals add constraint FKch7j7djqdcatu8cvfeoj5sm06 foreign key (room_room_id) references room

@@ -5,6 +5,8 @@ package com.jayaprabahar.favouritezoo.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -53,25 +55,25 @@ public class AnimalController {
 	}
 
 	@GetMapping("/{animalId}")
-	public Animal findAnimal(@PathVariable Long animalId) {
+	public Animal findAnimal(@PathVariable final Long animalId) {
 		return animalService.findAnimalById(animalId);
 	}
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Animal createAnimal(@RequestBody AnimalDto newAnimalDto) {
+	public Animal createAnimal(@RequestBody @Valid final AnimalDto newAnimalDto) {
 		return animalService.createAnimal(newAnimalDto);
 	}
 
 	@PutMapping("/{animalId}")
 	@ResponseStatus(HttpStatus.ACCEPTED)
-	public Animal updateAnimal(@PathVariable Long animalId, @RequestBody AnimalDto newAnimalDto) {
+	public Animal updateAnimal(@PathVariable Long animalId, @Valid @RequestBody final AnimalDto newAnimalDto) {
 		return animalService.updateAnimal(animalId, newAnimalDto);
 	}
 
 	@DeleteMapping("/{animalId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void deleteAnimal(@PathVariable Long animalId) {
+	public void deleteAnimal(@PathVariable final Long animalId) {
 		animalService.deleteAnimal(animalId);
 	}
 

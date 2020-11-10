@@ -49,7 +49,7 @@ public class FavouriteController {
 	 */
 	@PostMapping("/rooms/{roomId}/animals/{animalId}/")
 	@ResponseStatus(HttpStatus.CREATED)
-	public Favourite assignFavouriteRoomForAnimal(@PathVariable(name = "roomId") Long roomId, @PathVariable(name = "animalId") Long animalId) {
+	public Favourite assignFavouriteRoomForAnimal(@PathVariable(name = "roomId") final Long roomId, @PathVariable(name = "animalId") final Long animalId) {
 		return favouriteService.createFavourite(roomId, animalId);
 	}
 
@@ -59,7 +59,7 @@ public class FavouriteController {
 	 */
 	@DeleteMapping("/rooms/{roomId}/animals/{animalId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void unAssignFavouriteRoomForAnimal(@PathVariable(name = "roomId") Long roomId, @PathVariable(name = "animalId") Long animalId) {
+	public void unAssignFavouriteRoomForAnimal(@PathVariable(name = "roomId") final Long roomId, @PathVariable(name = "animalId") final Long animalId) {
 		favouriteService.deleteFavourite(roomId, animalId);
 	}
 
@@ -67,7 +67,7 @@ public class FavouriteController {
 	 * 
 	 */
 	@GetMapping("/animals/{animalId}")
-	public List<String> listOfFavoriteRooms(@PathVariable(name = "animalId") Long animalId) {
+	public List<String> listOfFavoriteRooms(@PathVariable(name = "animalId") final Long animalId) {
 		return favouriteService.getFavouriteRooms(animalId);
 	}
 

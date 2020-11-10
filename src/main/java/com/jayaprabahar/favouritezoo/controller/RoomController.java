@@ -5,8 +5,11 @@ package com.jayaprabahar.favouritezoo.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,6 +37,7 @@ import com.jayaprabahar.favouritezoo.service.RoomService;
  */
 @RestController
 @RequestMapping("/rooms")
+@Validated
 public class RoomController {
 
 	private RoomService roomService;
@@ -52,25 +56,25 @@ public class RoomController {
 	}
 
 	@GetMapping("/{roomId}")
-	public Room findRoom(@PathVariable Long roomId) {
+	public Room findRoom(@PathVariable final Long roomId) {
 		return roomService.findRoomById(roomId);
 	}
 
-	@PostMapping("/")
+	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Room createRoom(@RequestBody RoomDto roomDto) {
+	public Room createRoom(@RequestBody @Valid final RoomDto roomDto) {
 		return roomService.createRoom(roomDto);
 	}
 
 	@PutMapping("/{roomId}")
 	@ResponseStatus(HttpStatus.ACCEPTED)
-	public Room updateRoom(@PathVariable Long roomId, @RequestBody RoomDto roomDto) {
+	public Room updateRoom(@PathVariable Long roomId, @Valid @RequestBody final RoomDto roomDto) {
 		return roomService.updateRoom(roomId, roomDto);
 	}
 
 	@DeleteMapping("/{roomId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void deleteRoom(@PathVariable Long roomId) {
+	public void deleteRoom(@PathVariable final Long roomId) {
 		roomService.deleteRoom(roomId);
 	}
 

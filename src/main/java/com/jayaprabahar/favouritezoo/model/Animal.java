@@ -5,6 +5,7 @@ package com.jayaprabahar.favouritezoo.model;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -38,6 +39,7 @@ public class Animal {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "animal_id")
 	private long id;
 
 	private String title;
@@ -46,6 +48,7 @@ public class Animal {
 	private LocalDateTime located;
 
 	private String type;
+
 	private long preference;
 
 	@OneToOne(targetEntity = Room.class)

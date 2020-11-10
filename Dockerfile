@@ -1,8 +1,6 @@
 FROM openjdk:latest
 
-ARG JAR_FILE=target/*.jar
-
-COPY ${JAR_FILE} favouritezoo.jar
+COPY  ./target/*favouritezoo*.jar favouritezoo.jar
 
 EXPOSE 8080
 

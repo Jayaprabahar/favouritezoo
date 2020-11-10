@@ -3,7 +3,7 @@
  */
 package com.jayaprabahar.favouritezoo.dto;
 
-import java.time.LocalDateTime;
+import javax.validation.constraints.NotNull;
 
 import lombok.Data;
 
@@ -20,8 +20,10 @@ import lombok.Data;
  */
 @Data
 public class RoomDto {
-	private String title;
-	private Long size;
-	private LocalDateTime created;
 
+	@NotNull(message = "Title field is missing")
+	private String title;
+
+	@NotNull(message = "Size field is missing")
+	private Long size;
 }

@@ -4,15 +4,17 @@ kind: Deployment
 metadata:
   name: favouritezoo
 spec:
-  replicas: 2
+  ## Change this to more than 2 if you are going for multiple pod instances
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      ## allow max 1 new/extra pods at a time when rolling
+      maxSurge: 1
+      ## allow max 0 pod to be unavailable while the new one is not yet available                   
+      maxUnavailable: 0             
   selector:
     matchLabels:
       app: favouritezoo
-  strategy:
-    rollingUpdate:
-      maxSurge: 1
-      maxUnavailable: 1
-  minReadySeconds: 5 
   template:
     metadata:
       labels:
@@ -22,9 +24,25 @@ spec:
         "beta.kubernetes.io/os": linux
       containers:
       - name: favouritezoo
-        image: <container_registry / docker_hub_name>/openjdk11:latest
+        image: docker.io/jayaprabahar/favouritezoo:latest
         ports:
         - containerPort: 8080
+        livenessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 8081
+          initialDelaySeconds: 3
+          periodSeconds: 3
+        readinessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 8081
+          initialDelaySeconds: 3
+          periodSeconds: 3
+        resources:
+          requests:
+            cpu: "50m"
+            memory: "100Mi"
         resources:
           requests:
             cpu: 250m
@@ -36,7 +54,6 @@ kind: Service
 metadata:
   name: favouritezoo
 spec:
-  type: LoadBalancer
   ports:
   - port: 8080
   selector:

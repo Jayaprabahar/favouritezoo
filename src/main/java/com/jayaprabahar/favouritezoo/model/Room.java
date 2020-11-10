@@ -3,6 +3,7 @@ package com.jayaprabahar.favouritezoo.model;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -36,8 +37,11 @@ public class Room {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "room_id")
 	private long id;
+
 	private String title;
+
 	private Long size;
 
 	@CreationTimestamp

@@ -5,7 +5,9 @@ package com.jayaprabahar.favouritezoo.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 import com.jayaprabahar.favouritezoo.errorhandling.AnimalNotFoundException;
 import com.jayaprabahar.favouritezoo.errorhandling.AnimalNotInTheRoomException;
@@ -26,6 +28,7 @@ import com.jayaprabahar.favouritezoo.repository.RoomRepository;
  * @author <a href="mailto:jpofficial@gmail.com">Jayaprabahar</a>
  *
  */
+@Service
 public class AnimalRoomService {
 
 	private AnimalRepository animalRepository;
@@ -34,8 +37,10 @@ public class AnimalRoomService {
 	/**
 	 * 
 	 */
-	public AnimalRoomService(AnimalRepository animalRepository) {
+	@Autowired
+	public AnimalRoomService(AnimalRepository animalRepository, RoomRepository roomRepository) {
 		this.animalRepository = animalRepository;
+		this.roomRepository = roomRepository;
 	}
 
 	/**

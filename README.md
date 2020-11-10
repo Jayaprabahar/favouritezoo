@@ -1,19 +1,49 @@
-Perfomed Constructor autowiring which is best to maintain immutability
-Created separate request POJO for entities to avoid vulnearble injections "https://rules.sonarsource.com/java/tag/spring/RSPEC-4684"
-@ResponseStatus(HttpStatus.OK) is not added for getMappings, because it is a default status code
+1.	Perfomed Constructor autowiring which is best to maintain immutability
+1.	Created separate request POJO for entities to avoid vulnearble injections "https://rules.sonarsource.com/java/tag/spring/RSPEC-4684"
+1.	@ResponseStatus(HttpStatus.OK) is not added for getMappings, because it is a default status code
+1.	Since there is only one implementation, I didn't add Service interface
+1.	Gatling scripting
 
-Since there is only one implementation, I didn't add Service interface
 
+# DOCKER
+
+## Run on local docker engine
+ 
+A simple working dockerfile implementation is added as part of this source code. All you need is to run your local Docker engine (Eg:- docker desktop) and execute the following commands sequentially.
+*	docker build -t favouritezoo .
+*	docker run -p 8080:8080 favouritezoo
+
+If you feel it is working smooth, then
+*	docker push jayaprabahar/favouritezoo:latest
+
+## 	Push image into your Dockerhub
+*	docker tag favouritezoo jayaprabahar/favouritezoo:latest
+*	docker push jayaprabahar/favouritezoo:latest
+The push refers to repository [docker.io/jayaprabahar/favouritezoo]
+latest: digest: sha256:6847213ec5e98ce26c0f5247f44db356147a2e48e38bff4b9c8619d482d625bf size: 1166
+
+## 	Pull image from my/your Dockerhub
+
+I already pushed the image into my dockerhub. Its a public one. You can pull from three or you can pull from your own docker registry (acr/dockerhub), and run it
+*	docker pull jayaprabahar/favouritezoo:latest
+*	docker run -p 8080:8080 jayaprabahar/favouritezoo
+
+# CONTIANER ORCHESTRATION & CLOUD
+
+I added k8s configuration for deployment & service. 
+
+This configuration will work seemlessly in Azure, if you already tagged the image with you AzureContainerRegistry
+
+*	az acr list --resource-group VotingAppResourceGroup --query "[].{acrLoginServer:loginServer}" --output table
+*	docker tag favouritezoo <Your_ACR_Login_server>/favouritezoo:latest
+
+Example
+*	docker tag favouritezoo jpvotingappacr.azurecr.io/favouritezoo:latest
 
 # TODO
-Implement Docker
-Implement Kubernetes
-Deploy in Azure
 Add Swagger 3
 Add Unit testing
 Add Load testing script
-
-
 
 # Welcome
 

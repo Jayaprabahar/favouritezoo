@@ -5,6 +5,7 @@ package com.jayaprabahar.favouritezoo.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,35 +34,39 @@ public class AnimalRoomController {
 
 	private AnimalRoomService animalRoomService;
 
+	@Autowired
+	public AnimalRoomController(AnimalRoomService animalRoomService) {
+		this.animalRoomService = animalRoomService;
+	}
+
 	@GetMapping("/rooms/{roomId}/animals")
-	public List<Animal> listAllAnimalsInRoom(@PathVariable Long roomId, Pageable pageable) {
+	public List<Animal> listAllAnimalsInRoom(@PathVariable final Long roomId, Pageable pageable) {
 		return animalRoomService.findAllAnimalsInRoom(roomId, pageable);
 	}
 
 	@PutMapping("/{roomId}/animals/{animalId}")
 	@ResponseStatus(HttpStatus.CREATED)
-	public void placeAnimalIntoRoom(@PathVariable Long roomId, @PathVariable Long animalId) {
+	public void placeAnimalIntoRoom(@PathVariable final Long roomId, @PathVariable final Long animalId) {
 		animalRoomService.addRoomForAnimal(roomId, animalId);
 	}
 
 	@PutMapping("/{roomId}/animals/{animalId}/{newRoomId}")
 	@ResponseStatus(HttpStatus.CREATED)
-	public void moveAnimalBetweenRooms(@PathVariable Long roomId, @PathVariable Long animalId, @PathVariable Long newRoomId) {
+	public void moveAnimalBetweenRooms(@PathVariable final Long roomId, @PathVariable final Long animalId, @PathVariable Long newRoomId) {
 		animalRoomService.updateNewRoomForAnimal(roomId, animalId, newRoomId);
 	}
 
 	@PatchMapping("/{animalId}")
 	@ResponseStatus(HttpStatus.CREATED)
-	public void removeRoomForAnimal(@PathVariable Long animalId) {
+	public void removeRoomForAnimal(@PathVariable final Long animalId) {
 		animalRoomService.removeRoomForAnimal(animalId);
 	}
-	
+
 	/**
 	 * 
 	 */
 	@GetMapping("/happyAnimals")
 	public void listHappyAnimals() {
-		
 
 	}
 
