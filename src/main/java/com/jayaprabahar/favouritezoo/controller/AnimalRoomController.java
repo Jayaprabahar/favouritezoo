@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -44,22 +43,22 @@ public class AnimalRoomController {
 		return animalRoomService.findAllAnimalsInRoom(roomId, pageable);
 	}
 
-	@PutMapping("/{roomId}/animals/{animalId}")
+	@PutMapping("/rooms/{roomId}/animals/{animalId}")
 	@ResponseStatus(HttpStatus.CREATED)
-	public void placeAnimalIntoRoom(@PathVariable final Long roomId, @PathVariable final Long animalId) {
-		animalRoomService.addRoomForAnimal(roomId, animalId);
+	public Animal placeAnimalIntoRoom(@PathVariable final Long roomId, @PathVariable final Long animalId) {
+		return animalRoomService.addRoomForAnimal(roomId, animalId);
 	}
 
-	@PutMapping("/{roomId}/animals/{animalId}/{newRoomId}")
+	@PutMapping("/rooms/{roomId}/animals/{animalId}/{newRoomId}")
 	@ResponseStatus(HttpStatus.CREATED)
-	public void moveAnimalBetweenRooms(@PathVariable final Long roomId, @PathVariable final Long animalId, @PathVariable Long newRoomId) {
-		animalRoomService.updateNewRoomForAnimal(roomId, animalId, newRoomId);
+	public Animal moveAnimalBetweenRooms(@PathVariable final Long roomId, @PathVariable final Long animalId, @PathVariable Long newRoomId) {
+		return animalRoomService.updateNewRoomForAnimal(roomId, animalId, newRoomId);
 	}
 
-	@PatchMapping("/{animalId}")
+	@PutMapping("/rooms//{animalId}")
 	@ResponseStatus(HttpStatus.CREATED)
-	public void removeRoomForAnimal(@PathVariable final Long animalId) {
-		animalRoomService.removeRoomForAnimal(animalId);
+	public Animal removeRoomForAnimal(@PathVariable final Long animalId) {
+		return animalRoomService.removeRoomForAnimal(animalId);
 	}
 
 	/**

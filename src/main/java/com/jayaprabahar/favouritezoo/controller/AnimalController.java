@@ -10,6 +10,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jayaprabahar.favouritezoo.dto.AnimalDto;
+import com.jayaprabahar.favouritezoo.dto.GenericResponse;
 import com.jayaprabahar.favouritezoo.model.Animal;
 import com.jayaprabahar.favouritezoo.service.AnimalService;
 
@@ -72,9 +74,9 @@ public class AnimalController {
 	}
 
 	@DeleteMapping("/{animalId}")
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void deleteAnimal(@PathVariable final Long animalId) {
+	public ResponseEntity<GenericResponse> deleteAnimal(@PathVariable final Long animalId) {
 		animalService.deleteAnimal(animalId);
+		return new ResponseEntity<>(GenericResponse.builder().message(String.format("Animal with id %d is deleted", animalId)).build(), HttpStatus.OK);
 	}
 
 }

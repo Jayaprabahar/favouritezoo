@@ -7,12 +7,15 @@ import java.time.LocalDateTime;
 
 import org.springframework.http.HttpStatus;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
 /**
- * <p> Project : mt940FileValidator </p>
+ * <p> Project : favouritezoo </p>
  * <p> Title : GenericResponse.java </p>
  * <p> Description: </p>
  * <p> Created: Jul 21, 2019</p>
@@ -23,6 +26,7 @@ import lombok.Data;
 @Data
 @Builder
 @AllArgsConstructor
+@JsonInclude(Include.NON_EMPTY)
 public class GenericResponse {
 
 	@Builder.Default

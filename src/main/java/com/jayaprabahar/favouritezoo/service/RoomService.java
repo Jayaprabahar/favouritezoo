@@ -5,6 +5,7 @@ package com.jayaprabahar.favouritezoo.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.jayaprabahar.favouritezoo.dto.RoomDto;
@@ -35,8 +36,8 @@ public class RoomService {
 		this.roomRepository = roomRepository;
 	}
 
-	public List<Room> findAllRooms() {
-		return roomRepository.findAll();
+	public List<Room> findAllRooms(Pageable pageable) {
+		return roomRepository.findAll(pageable).toList();
 	}
 
 	public Room findRoomById(Long roomId) {

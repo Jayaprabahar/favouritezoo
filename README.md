@@ -3,6 +3,8 @@
 1.	@ResponseStatus(HttpStatus.OK) is not added for getMappings, because it is a default status code
 1.	Since there is only one implementation, I didn't add Service interface
 1.	Gatling scripting
+* Code formatting inside lambdas
+
 
 
 # DOCKER
@@ -39,6 +41,15 @@ This configuration will work seemlessly in Azure, if you already tagged the imag
 
 Example
 *	docker tag favouritezoo jpvotingappacr.azurecr.io/favouritezoo:latest
+
+
+
+# Database
+As context root is added in the application, all the API endpoints as well as h2-console will be accessed with prefixed context root
+
+*	http://localhost:8080/favouritezoo/h2-console
+
+Please uncomment the "automatically generate SQL schema" configurations in application properties to let spring to automatically generate the SQL schema under the specified location "Uncomment to automatically generate SQL Schema at the specified target"
 
 # TODO
 Add Swagger 3
