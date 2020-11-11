@@ -42,7 +42,7 @@ public class Room {
 
 	private String title;
 
-	private Long size;
+	private long size;
 
 	@CreationTimestamp
 	private LocalDateTime created;

@@ -5,6 +5,8 @@ package com.jayaprabahar.favouritezoo.errorhandling;
 
 import java.util.stream.Collectors;
 
+import org.h2.jdbc.JdbcSQLIntegrityConstraintViolationException;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +15,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.jayaprabahar.favouritezoo.dto.GenericResponse;
+import com.jayaprabahar.favouritezoo.dto.GenericResponseDto;
 
 /**
  * <p> Project : favouritezoo </p>
@@ -34,10 +36,25 @@ public class ApiControllerAdvice {
 	 */
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public ResponseEntity<GenericResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+	public ResponseEntity<GenericResponseDto> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
 		return new ResponseEntity<>(
-				GenericResponse.builder().error(e.getBindingResult().getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.joining(", "))).build(),
+				GenericResponseDto.builder().error(e.getBindingResult().getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.joining(", "))).build(),
 				HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(ConstraintViolationException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public ResponseEntity<GenericResponseDto> handleConstraintViolationException(ConstraintViolationException e) {
+		if(e.getSQLException() instanceof JdbcSQLIntegrityConstraintViolationException && e.getCause().getMessage().contains("Unique index or primary key violation")) {
+			return new ResponseEntity<>(GenericResponseDto.builder().message("Information already exist").build(), HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity<>(GenericResponseDto.builder().error(e.getLocalizedMessage()).build(), HttpStatus.BAD_REQUEST);
+	}
+	
+	@ExceptionHandler(JdbcSQLIntegrityConstraintViolationException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public ResponseEntity<GenericResponseDto> handleConstraintViolationException(JdbcSQLIntegrityConstraintViolationException e) {
+		return new ResponseEntity<>(GenericResponseDto.builder().error(e.getLocalizedMessage()).build(), HttpStatus.BAD_REQUEST);
 	}
 
 }

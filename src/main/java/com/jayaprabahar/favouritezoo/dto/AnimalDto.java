@@ -7,6 +7,9 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 import lombok.Data;
 
 /**
@@ -21,6 +24,7 @@ import lombok.Data;
  *
  */
 @Data
+@JsonInclude(Include.NON_EMPTY)
 public class AnimalDto {
 
 	@NotNull(message = "Title field is missing")

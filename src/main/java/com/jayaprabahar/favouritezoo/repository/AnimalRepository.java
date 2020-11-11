@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.jayaprabahar.favouritezoo.model.Animal;
+import com.jayaprabahar.favouritezoo.model.Room;
 
 /**
  * <p> Project : favouritezoo </p>
@@ -30,5 +31,7 @@ public interface AnimalRepository extends JpaRepository<Animal, Long>{
 	 * @return
 	 */
 	Page<Animal> findAllById(Long roomId, Pageable pageable);
+	
+	Page<Animal> findAllByRoom(Room room, Pageable pageable);
 
 }

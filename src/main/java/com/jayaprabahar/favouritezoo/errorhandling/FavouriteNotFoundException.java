@@ -29,7 +29,7 @@ public class FavouriteNotFoundException extends RuntimeException {
 	 * 
 	 */
 	public FavouriteNotFoundException(Long roomId, Long animalId) {
-		super("Could not find room, animal mapping with roomId " + roomId + " and animalId" + animalId);
+		super(String.format("Could not find room, animal mapping with roomId %d and animalId %d", roomId, animalId));
 	}
 
 }

@@ -6,9 +6,7 @@ package com.jayaprabahar.favouritezoo.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import com.jayaprabahar.favouritezoo.errorhandling.AnimalNotFoundException;
 import com.jayaprabahar.favouritezoo.errorhandling.FavouriteNotFoundException;
@@ -47,6 +45,13 @@ public class FavouriteService {
 		this.animalRepository = animalRepository;
 	}
 
+	public Favourite findFavourite(Long roomId, Long animalId) {
+		Room room = roomRepository.findById(roomId).orElseThrow(() -> new RoomNotFoundException(roomId));
+		Animal animal = animalRepository.findById(animalId).orElseThrow(() -> new AnimalNotFoundException(animalId));
+
+		return favouriteRepository.findByRoomAndAnimal(room, animal).orElseThrow(() -> new FavouriteNotFoundException(roomId, animalId));
+	}
+
 	public Favourite createFavourite(Long roomId, Long animalId) {
 		Room room = roomRepository.findById(roomId).orElseThrow(() -> new RoomNotFoundException(roomId));
 		Animal animal = animalRepository.findById(animalId).orElseThrow(() -> new AnimalNotFoundException(animalId));
@@ -58,18 +63,15 @@ public class FavouriteService {
 		Room room = roomRepository.findById(roomId).orElseThrow(() -> new RoomNotFoundException(roomId));
 		Animal animal = animalRepository.findById(animalId).orElseThrow(() -> new AnimalNotFoundException(animalId));
 
-		List<Favourite> favourites = favouriteRepository.findAll(Example.of(new Favourite(room, animal)));
-		if (CollectionUtils.isEmpty(favourites)) {
-			favouriteRepository.delete(favourites.get(0));
-		} else {
+		favouriteRepository.findByRoomAndAnimal(room, animal).ifPresentOrElse(e -> favouriteRepository.delete(e), () -> {
 			throw new FavouriteNotFoundException(roomId, animalId);
-		}
+		});
 	}
 
 	public List<String> getFavouriteRooms(Long animalId) {
 		Animal animal = animalRepository.findById(animalId).orElseThrow(() -> new AnimalNotFoundException(animalId));
 
-		return favouriteRepository.findAll(Example.of(new Favourite(animal))).stream().map(e -> e.getRoom().getTitle()).collect(Collectors.toList());
+		return favouriteRepository.findByAnimal(animal).stream().map(e -> e.getRoom().getTitle()).collect(Collectors.toList());
 	}
 
 }

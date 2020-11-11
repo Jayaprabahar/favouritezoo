@@ -4,6 +4,7 @@
 package com.jayaprabahar.favouritezoo.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.jayaprabahar.favouritezoo.dto.AnimalDto;
+import com.jayaprabahar.favouritezoo.dto.AnimalResponseDto;
 import com.jayaprabahar.favouritezoo.errorhandling.AnimalNotFoundException;
 import com.jayaprabahar.favouritezoo.model.Animal;
 import com.jayaprabahar.favouritezoo.repository.AnimalRepository;
@@ -47,12 +49,7 @@ public class AnimalService {
 	}
 
 	public Animal createAnimal(AnimalDto newAnimalDto) {
-		return animalRepository.save(
-				Animal.builder()
-					.title(newAnimalDto.getTitle())
-					.type(newAnimalDto.getType())
-					.preference(newAnimalDto.getPreference())
-					.build());
+		return animalRepository.save(Animal.builder().title(newAnimalDto.getTitle()).type(newAnimalDto.getType()).preference(newAnimalDto.getPreference()).build());
 	}
 
 	public Animal updateAnimal(Long id, AnimalDto newAnimalDto) {
@@ -74,8 +71,10 @@ public class AnimalService {
 	 * @param pageable
 	 * @return
 	 */
-	public List<Animal> findAllAnimals(Pageable pageable) {
-		return animalRepository.findAll(pageable).toList();
+	public List<AnimalResponseDto> findAllAnimals(Pageable pageable) {
+		return animalRepository.findAll(pageable).toList().stream()
+				.map(e -> AnimalResponseDto.builder().title(e.getTitle()).added(e.getAdded()).build())
+				.collect(Collectors.toList());
 	}
 
 }

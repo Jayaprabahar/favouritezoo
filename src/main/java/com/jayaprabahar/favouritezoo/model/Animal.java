@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import lombok.AllArgsConstructor;
@@ -43,6 +44,9 @@ public class Animal {
 	private long id;
 
 	private String title;
+	
+	@CreationTimestamp
+	private LocalDateTime added;
 
 	@UpdateTimestamp
 	private LocalDateTime located;

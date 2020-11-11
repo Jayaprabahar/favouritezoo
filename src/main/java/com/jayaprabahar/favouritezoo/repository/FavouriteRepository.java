@@ -3,10 +3,14 @@
  */
 package com.jayaprabahar.favouritezoo.repository;
 
+import com.jayaprabahar.favouritezoo.model.Animal;
+import com.jayaprabahar.favouritezoo.model.Favourite;
+import com.jayaprabahar.favouritezoo.model.Room;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.jayaprabahar.favouritezoo.model.Favourite;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * <p> Project : favouritezoo </p>
@@ -22,4 +26,7 @@ import com.jayaprabahar.favouritezoo.model.Favourite;
 @Repository
 public interface FavouriteRepository extends JpaRepository<Favourite, Long> {
 	
+	Optional<Favourite> findByRoomAndAnimal(Room room, Animal animal);
+
+	List<Favourite> findByAnimal(Animal animal);
 }

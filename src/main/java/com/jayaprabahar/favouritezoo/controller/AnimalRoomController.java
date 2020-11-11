@@ -4,16 +4,16 @@
 package com.jayaprabahar.favouritezoo.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.jayaprabahar.favouritezoo.dto.AnimalResponseDto;
 import com.jayaprabahar.favouritezoo.model.Animal;
 import com.jayaprabahar.favouritezoo.service.AnimalRoomService;
 
@@ -38,35 +38,36 @@ public class AnimalRoomController {
 		this.animalRoomService = animalRoomService;
 	}
 
-	@GetMapping("/rooms/{roomId}/animals")
-	public List<Animal> listAllAnimalsInRoom(@PathVariable final Long roomId, Pageable pageable) {
-		return animalRoomService.findAllAnimalsInRoom(roomId, pageable);
-	}
-
-	@PutMapping("/rooms/{roomId}/animals/{animalId}")
-	@ResponseStatus(HttpStatus.CREATED)
+	// Tested
+	@PatchMapping("/rooms/{roomId}/animals/{animalId}")
 	public Animal placeAnimalIntoRoom(@PathVariable final Long roomId, @PathVariable final Long animalId) {
 		return animalRoomService.addRoomForAnimal(roomId, animalId);
 	}
 
-	@PutMapping("/rooms/{roomId}/animals/{animalId}/{newRoomId}")
-	@ResponseStatus(HttpStatus.CREATED)
+	// Tested
+	@PatchMapping("/rooms/{roomId}/animals/{animalId}/{newRoomId}")
 	public Animal moveAnimalBetweenRooms(@PathVariable final Long roomId, @PathVariable final Long animalId, @PathVariable Long newRoomId) {
 		return animalRoomService.updateNewRoomForAnimal(roomId, animalId, newRoomId);
 	}
 
-	@PutMapping("/rooms//{animalId}")
-	@ResponseStatus(HttpStatus.CREATED)
+	// Tested
+	@PatchMapping("/rooms/animals/{animalId}")
 	public Animal removeRoomForAnimal(@PathVariable final Long animalId) {
 		return animalRoomService.removeRoomForAnimal(animalId);
+	}
+
+	// Tested
+	@GetMapping("/rooms/{roomId}/animals")
+	public List<AnimalResponseDto> listAllAnimalsInRoom(@PathVariable final Long roomId, Pageable pageable) {
+		return animalRoomService.findAllAnimalsInRoom(roomId, pageable);
 	}
 
 	/**
 	 * 
 	 */
 	@GetMapping("/happyAnimals")
-	public void listHappyAnimals() {
-
+	public Map<String, Long> listHappyAnimals() {
+		return animalRoomService.listHappyAnimals();
 	}
 
 }

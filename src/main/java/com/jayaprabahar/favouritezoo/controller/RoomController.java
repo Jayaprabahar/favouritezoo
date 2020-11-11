@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.jayaprabahar.favouritezoo.dto.GenericResponse;
+import com.jayaprabahar.favouritezoo.dto.GenericResponseDto;
 import com.jayaprabahar.favouritezoo.dto.RoomDto;
 import com.jayaprabahar.favouritezoo.model.Room;
 import com.jayaprabahar.favouritezoo.service.RoomService;
@@ -53,32 +53,37 @@ public class RoomController {
 		this.roomService = roomService;
 	}
 
+	//Tested
 	@GetMapping
 	public List<Room> findAllRooms(Pageable pageable) {
 		return roomService.findAllRooms(pageable);
 	}
 
+	//Tested
 	@GetMapping("/{roomId}")
 	public Room findRoom(@PathVariable final Long roomId) {
 		return roomService.findRoomById(roomId);
 	}
 
+	//Tested
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public Room createRoom(@RequestBody @Valid final RoomDto roomDto) {
 		return roomService.createRoom(roomDto);
 	}
 
+	//Tested
 	@PutMapping("/{roomId}")
 	@ResponseStatus(HttpStatus.ACCEPTED)
 	public Room updateRoom(@PathVariable Long roomId, @Valid @RequestBody final RoomDto roomDto) {
 		return roomService.updateRoom(roomId, roomDto);
 	}
 
+	//Tested
 	@DeleteMapping("/{roomId}")
-	public ResponseEntity<GenericResponse> deleteRoom(@PathVariable final Long roomId) {
+	public ResponseEntity<GenericResponseDto> deleteRoom(@PathVariable final Long roomId) {
 		roomService.deleteRoom(roomId);
-		return new ResponseEntity<>(GenericResponse.builder().message(String.format("Room with id %d is deleted", roomId)).build(), HttpStatus.OK);
+		return new ResponseEntity<>(GenericResponseDto.builder().message(String.format("Room with id %d is deleted", roomId)).build(), HttpStatus.OK);
 	}
 
 }

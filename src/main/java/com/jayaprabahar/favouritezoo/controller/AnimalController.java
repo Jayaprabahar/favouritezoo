@@ -22,7 +22,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jayaprabahar.favouritezoo.dto.AnimalDto;
-import com.jayaprabahar.favouritezoo.dto.GenericResponse;
+import com.jayaprabahar.favouritezoo.dto.AnimalResponseDto;
+import com.jayaprabahar.favouritezoo.dto.GenericResponseDto;
 import com.jayaprabahar.favouritezoo.model.Animal;
 import com.jayaprabahar.favouritezoo.service.AnimalService;
 
@@ -51,32 +52,37 @@ public class AnimalController {
 		this.animalService = animalService;
 	}
 
-	@GetMapping
-	public List<Animal> listAllAnimals(Pageable pageable) {
-		return animalService.findAllAnimals(pageable);
-	}
-
+	// Tested
 	@GetMapping("/{animalId}")
 	public Animal findAnimal(@PathVariable final Long animalId) {
 		return animalService.findAnimalById(animalId);
 	}
 
+	// Tested
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public Animal createAnimal(@RequestBody @Valid final AnimalDto newAnimalDto) {
 		return animalService.createAnimal(newAnimalDto);
 	}
 
+	// Tested
 	@PutMapping("/{animalId}")
 	@ResponseStatus(HttpStatus.ACCEPTED)
 	public Animal updateAnimal(@PathVariable Long animalId, @Valid @RequestBody final AnimalDto newAnimalDto) {
 		return animalService.updateAnimal(animalId, newAnimalDto);
 	}
 
+	// Tested
 	@DeleteMapping("/{animalId}")
-	public ResponseEntity<GenericResponse> deleteAnimal(@PathVariable final Long animalId) {
+	public ResponseEntity<GenericResponseDto> deleteAnimal(@PathVariable final Long animalId) {
 		animalService.deleteAnimal(animalId);
-		return new ResponseEntity<>(GenericResponse.builder().message(String.format("Animal with id %d is deleted", animalId)).build(), HttpStatus.OK);
+		return new ResponseEntity<>(GenericResponseDto.builder().message(String.format("Animal with id %d is deleted", animalId)).build(), HttpStatus.OK);
+	}
+
+	// Tested
+	@GetMapping
+	public List<AnimalResponseDto> listAllAnimals(Pageable pageable) {
+		return animalService.findAllAnimals(pageable);
 	}
 
 }

@@ -5,8 +5,6 @@ package com.jayaprabahar.favouritezoo.dto;
 
 import java.time.LocalDateTime;
 
-import org.springframework.http.HttpStatus;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
@@ -16,28 +14,24 @@ import lombok.Data;
 
 /**
  * <p> Project : favouritezoo </p>
- * <p> Title : GenericResponse.java </p>
- * <p> Description: </p>
- * <p> Created: Jul 21, 2019</p>
+ * <p> Title : AnimalResponseDto.java </p>
+ * <p> Description: TODO </p>
+ * <p> Created: Nov 11, 2020 </p>
  * 
- * @version 1.0
+ * @since 1.0.0
+ * @version 1.0.0
  * @author <a href="mailto:jpofficial@gmail.com">Jayaprabahar</a>
+ *
  */
 @Data
 @Builder
 @AllArgsConstructor
 @JsonInclude(Include.NON_EMPTY)
-public class GenericResponse {
+public class AnimalResponseDto {
 
-	@Builder.Default
-	LocalDateTime timestamp = LocalDateTime.now();
+	private String title;
 
-	@Builder.Default
-	int status = HttpStatus.BAD_REQUEST.value();
+	private LocalDateTime added;
 
-	String error;
-
-	@Builder.Default
-	String message = "Invalid input";
-
+	private LocalDateTime located;
 }
