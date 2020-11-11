@@ -31,7 +31,7 @@ import com.jayaprabahar.favouritezoo.service.AnimalService;
  * <p> Project : favouritezoo </p>
  * <p> Title : AnimalController.java </p>
  * <p> Description: TODO </p>
- * <p> Created: Nov 8, 2020 </p>
+ * <p> Created: Nov 10, 2020 </p>
  * 
  * @since 1.0.0
  * @version 1.0.0
@@ -52,34 +52,29 @@ public class AnimalController {
 		this.animalService = animalService;
 	}
 
-	// Tested
 	@GetMapping("/{animalId}")
 	public Animal findAnimal(@PathVariable final Long animalId) {
 		return animalService.findAnimalById(animalId);
 	}
 
-	// Tested
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public Animal createAnimal(@RequestBody @Valid final AnimalDto newAnimalDto) {
 		return animalService.createAnimal(newAnimalDto);
 	}
 
-	// Tested
 	@PutMapping("/{animalId}")
 	@ResponseStatus(HttpStatus.ACCEPTED)
 	public Animal updateAnimal(@PathVariable Long animalId, @Valid @RequestBody final AnimalDto newAnimalDto) {
 		return animalService.updateAnimal(animalId, newAnimalDto);
 	}
 
-	// Tested
 	@DeleteMapping("/{animalId}")
 	public ResponseEntity<GenericResponseDto> deleteAnimal(@PathVariable final Long animalId) {
 		animalService.deleteAnimal(animalId);
 		return new ResponseEntity<>(GenericResponseDto.builder().message(String.format("Animal with id %d is deleted", animalId)).build(), HttpStatus.OK);
 	}
 
-	// Tested
 	@GetMapping
 	public List<AnimalResponseDto> listAllAnimals(Pageable pageable) {
 		return animalService.findAllAnimals(pageable);

@@ -31,7 +31,7 @@ import com.jayaprabahar.favouritezoo.service.RoomService;
  * <p> Project : favouritezoo </p>
  * <p> Title : RoomController.java </p>
  * <p> Description: TODO </p>
- * <p> Created: Nov 8, 2020 </p>
+ * <p> Created: Nov 10, 2020 </p>
  * 
  * @since 1.0.0
  * @version 1.0.0
@@ -53,33 +53,28 @@ public class RoomController {
 		this.roomService = roomService;
 	}
 
-	//Tested
 	@GetMapping
 	public List<Room> findAllRooms(Pageable pageable) {
 		return roomService.findAllRooms(pageable);
 	}
 
-	//Tested
 	@GetMapping("/{roomId}")
 	public Room findRoom(@PathVariable final Long roomId) {
 		return roomService.findRoomById(roomId);
 	}
 
-	//Tested
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public Room createRoom(@RequestBody @Valid final RoomDto roomDto) {
 		return roomService.createRoom(roomDto);
 	}
 
-	//Tested
 	@PutMapping("/{roomId}")
 	@ResponseStatus(HttpStatus.ACCEPTED)
 	public Room updateRoom(@PathVariable Long roomId, @Valid @RequestBody final RoomDto roomDto) {
 		return roomService.updateRoom(roomId, roomDto);
 	}
 
-	//Tested
 	@DeleteMapping("/{roomId}")
 	public ResponseEntity<GenericResponseDto> deleteRoom(@PathVariable final Long roomId) {
 		roomService.deleteRoom(roomId);

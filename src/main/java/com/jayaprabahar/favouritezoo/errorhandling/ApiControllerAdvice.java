@@ -5,7 +5,6 @@ package com.jayaprabahar.favouritezoo.errorhandling;
 
 import java.util.stream.Collectors;
 
-import org.h2.jdbc.JdbcSQLIntegrityConstraintViolationException;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
@@ -45,16 +44,10 @@ public class ApiControllerAdvice {
 	@ExceptionHandler(ConstraintViolationException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public ResponseEntity<GenericResponseDto> handleConstraintViolationException(ConstraintViolationException e) {
-		if(e.getSQLException() instanceof JdbcSQLIntegrityConstraintViolationException && e.getCause().getMessage().contains("Unique index or primary key violation")) {
+		if(e.getCause().getMessage().contains("Unique index or primary key violation")) {
 			return new ResponseEntity<>(GenericResponseDto.builder().message("Information already exist").build(), HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<>(GenericResponseDto.builder().error(e.getLocalizedMessage()).build(), HttpStatus.BAD_REQUEST);
 	}
 	
-	@ExceptionHandler(JdbcSQLIntegrityConstraintViolationException.class)
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public ResponseEntity<GenericResponseDto> handleConstraintViolationException(JdbcSQLIntegrityConstraintViolationException e) {
-		return new ResponseEntity<>(GenericResponseDto.builder().error(e.getLocalizedMessage()).build(), HttpStatus.BAD_REQUEST);
-	}
-
 }
