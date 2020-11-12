@@ -60,7 +60,7 @@ public class AnimalRoomController {
 
 	@GetMapping("/happyAnimals")
 	public Map<String, Long> listHappyAnimals() {
-		return animalRoomService.listHappyAnimals();
+		return animalRoomService.getHappyAnimalsListPerRoom();
 	}
 
 }

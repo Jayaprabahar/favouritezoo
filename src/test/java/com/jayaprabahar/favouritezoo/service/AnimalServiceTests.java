@@ -55,7 +55,7 @@ class AnimalServiceTests {
 		Animal animal = animalService.createAnimal(newAnimalDto2);
 
 		assertEquals("New Cow", animal.getTitle());
-		assertEquals(">=", animal.getTitle());
+		assertEquals(">=", animal.getType());
 		assertEquals(20l, animal.getPreference());
 		assertTrue(animal.getId() >= 1);
 	}

@@ -17,6 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.jayaprabahar.favouritezoo.dto.AnimalDto;
 import com.jayaprabahar.favouritezoo.dto.RoomDto;
+import com.jayaprabahar.favouritezoo.errorhandling.AnimalNotFoundException;
 import com.jayaprabahar.favouritezoo.errorhandling.FavouriteNotFoundException;
 import com.jayaprabahar.favouritezoo.errorhandling.RoomNotFoundException;
 import com.jayaprabahar.favouritezoo.model.Animal;
@@ -52,32 +53,32 @@ class FavouriteServiceTests {
 
 		assertNotNull(favourite);
 		assertTrue(favourite.getId() >= 1);
-		assertEquals(50l, favourite.getRoom().getId());
-		assertEquals(34l, favourite.getAnimal().getId());
+		assertEquals(50l, favourite.getRoom().getSize());
+		assertEquals(34l, favourite.getAnimal().getPreference());
 	}
 
 	@Test
 	void testAllNotFoundExceptions() {
 		Animal animal = animalService.createAnimal(new AnimalDto("Puppy", ">=", 34l));
 		Room room = roomService.createRoom(new RoomDto("Yellow", 50l));
+		Room room2 = roomService.createRoom(new RoomDto("Blue", 5l));
 
 		assertThrows(RoomNotFoundException.class, () -> {
-			favouriteService.createFavourite(room.getId() + 1, animal.getId());
+			favouriteService.createFavourite(room.getId() + 10, animal.getId());
 		});
-		assertThrows(RoomNotFoundException.class, () -> {
-			favouriteService.createFavourite(room.getId(), animal.getId() + 1);
+		assertThrows(AnimalNotFoundException.class, () -> {
+			favouriteService.createFavourite(room.getId(), animal.getId() + 10);
 		});
-
-		favouriteService.createFavourite(room.getId(), animal.getId());
 
 		assertThrows(FavouriteNotFoundException.class, () -> {
-			favouriteService.findFavourite(room.getId() + 1, animal.getId());
+			favouriteService.findFavourite(room.getId(), animal.getId());
 		});
 
+		assertNotNull(favouriteService.createFavourite(room.getId(), animal.getId()));
 		assertNotNull(favouriteService.findFavourite(room.getId(), animal.getId()));
 
 		assertThrows(FavouriteNotFoundException.class, () -> {
-			favouriteService.deleteFavourite(room.getId() + 1, animal.getId());
+			favouriteService.deleteFavourite(room2.getId(), animal.getId());
 		});
 
 	}

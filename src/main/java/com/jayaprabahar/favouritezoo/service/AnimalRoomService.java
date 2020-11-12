@@ -73,13 +73,24 @@ public class AnimalRoomService {
 		Room newRoom = roomRepository.findById(newRoomId).orElseThrow(() -> new RoomNotFoundException(newRoomId));
 		Animal animal = animalRepository.findById(animalId).orElseThrow(() -> new AnimalNotFoundException(animalId));
 
-		if (animal.getRoom().getId() == room.getId()) {
+		if (animal.getRoom() != null && animal.getRoom().getId() == room.getId()) {
 			animal.setRoom(newRoom);
 			return animalRepository.save(animal);
 		} else {
 			throw new AnimalNotInTheRoomException(animalId, roomId);
 		}
 
+	}
+
+	/**
+	 * @param animalId
+	 * @return 
+	 */
+	public Animal removeRoomForAnimal(Long animalId) {
+		return animalRepository.findById(animalId).map(animal -> {
+			animal.setRoom(null);
+			return animalRepository.save(animal);
+		}).orElseThrow(() -> new AnimalNotFoundException(animalId));
 	}
 
 	/**
@@ -95,20 +106,9 @@ public class AnimalRoomService {
 	}
 
 	/**
-	 * @param animalId
-	 * @return 
-	 */
-	public Animal removeRoomForAnimal(Long animalId) {
-		return animalRepository.findById(animalId).map(animal -> {
-			animal.setRoom(null);
-			return animalRepository.save(animal);
-		}).orElseThrow(() -> new AnimalNotFoundException(animalId));
-	}
-
-	/**
 	 * @return
 	 */
-	public Map<String, Long> listHappyAnimals() {
+	public Map<String, Long> getHappyAnimalsListPerRoom() {
 		List<Animal> animals = animalRepository.findAll();
 		Map<String, Long> roomHappyAnimalMap = new HashMap<>();
 
