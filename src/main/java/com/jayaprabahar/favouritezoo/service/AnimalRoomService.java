@@ -112,10 +112,8 @@ public class AnimalRoomService {
 		List<Animal> animals = animalRepository.findAll();
 		Map<String, Long> roomHappyAnimalMap = new HashMap<>();
 
-		roomRepository.findAll().forEach(eachRoom -> {
-			roomHappyAnimalMap.put(eachRoom.getTitle(),
-					animals.stream().filter(animal -> scriptEngine.evaluateBooleanScripts(eachRoom.getSize() + animal.getType() + String.valueOf(animal.getPreference()))).count());
-		});
+		roomRepository.findAll().forEach(eachRoom -> roomHappyAnimalMap.put(eachRoom.getTitle(),
+				animals.stream().filter(animal -> scriptEngine.evaluateBooleanScripts(eachRoom.getSize() + animal.getType() + String.valueOf(animal.getPreference()))).count()));
 		return roomHappyAnimalMap;
 	}
 

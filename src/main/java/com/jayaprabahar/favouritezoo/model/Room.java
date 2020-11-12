@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -40,8 +41,10 @@ public class Room {
 	@Column(name = "room_id")
 	private long id;
 
+	@NotNull
 	private String title;
 
+	@NotNull
 	private long size;
 
 	@CreationTimestamp

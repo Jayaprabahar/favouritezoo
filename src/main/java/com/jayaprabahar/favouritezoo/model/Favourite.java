@@ -11,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -34,13 +35,15 @@ public class Favourite {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private long id;
 
 	@OneToOne
 	@JoinColumn(name = "room_id")
+	@NotNull
 	private Room room;
 
 	@OneToOne
+	@NotNull
 	@JoinColumn(name = "animal_id")
 	private Animal animal;
 

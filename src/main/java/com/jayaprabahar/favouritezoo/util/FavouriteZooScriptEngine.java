@@ -28,6 +28,7 @@ public class FavouriteZooScriptEngine {
 		try {
 			return Boolean.valueOf(String.valueOf(nashornEngine.eval(script)));
 		} catch (ScriptException e) {
+			// DO NOTHING
 		}
 		return false;
 	}

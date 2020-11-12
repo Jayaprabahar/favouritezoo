@@ -26,11 +26,11 @@ import com.jayaprabahar.favouritezoo.model.Room;
 public interface AnimalRepository extends JpaRepository<Animal, Long>{
 
 	/**
-	 * @param roomId
+	 * @param animalId
 	 * @param sort
 	 * @return
 	 */
-	Page<Animal> findAllById(Long roomId, Pageable pageable);
+	Page<Animal> findAllById(Long animalId, Pageable pageable);
 	
 	Page<Animal> findAllByRoom(Room room, Pageable pageable);
 

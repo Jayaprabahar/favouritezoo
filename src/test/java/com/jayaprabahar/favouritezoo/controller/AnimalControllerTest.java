@@ -3,17 +3,21 @@
  */
 package com.jayaprabahar.favouritezoo.controller;
 
-import static org.junit.Assert.assertEquals;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jayaprabahar.favouritezoo.dto.AnimalResponseDto;
+
 
 /**
  * <p> Project : favouritezoo </p>
@@ -27,24 +31,85 @@ import org.springframework.test.web.servlet.MockMvc;
  *
  */
 @SpringBootTest
-@RunWith(SpringRunner.class)
 @AutoConfigureMockMvc
-public class AnimalControllerTest {
+class AnimalControllerTest {
 	
-	private static final String API_URL = "/favouritezoo";
+	private static final String API_ANIMAL_URL = "/animals";
 
 	@Autowired
 	private MockMvc mockMvc;
-
-	/* @formatter:off */
+	
+	@Autowired
+	private ObjectMapper objectMapper;
+	
+	/**
+	 * @throws Exception 
+	 * 
+	 */
+	@Test
+	void testListAllAnimals() throws Exception {
+		MvcResult mvcResult = mockMvc.perform(get(API_ANIMAL_URL))
+				.andExpect(status().isOk())
+				.andReturn();
+		
+		List<AnimalResponseDto> animalResponseDtos = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), List.class);
+		
+		System.out.println("1-->" + animalResponseDtos);
+		System.out.println("2-->" + animalResponseDtos.get(0));
+		System.out.println("3-->" + animalResponseDtos.get(0).getTitle());
+	}
 	
 	@Test
-	public void givenNoUpperLimit_thenStatus400_UpperLimitNotPresent() throws Exception {
-		String response = mockMvc.perform(post(API_URL))
-				.andExpect(status().isBadRequest())
-				.andReturn().getResolvedException().getMessage();
-		assertEquals("Required Integer parameter 'upperLimit' is not present", response);
+	void testListAllAnimals1() throws Exception {
+		String body = "[{\"title\":\"Dog\",\"added\":\"2020-11-11T18:01:09.251246\"},{\"title\":\"Cat\",\"added\":\"2020-11-11T18:01:09.458435\"}]";
+		
+		MvcResult mvcResult = mockMvc.perform(get(API_ANIMAL_URL))
+				.andExpect(status().isOk())
+				.andReturn();
+		
+		List<AnimalResponseDto> animalResponseDtos = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), List.class);
+		
+		System.out.println("1-->" + animalResponseDtos);
+		System.out.println("2-->" + animalResponseDtos.get(0));
+		System.out.println("3-->" + animalResponseDtos.get(0).getTitle());
+		
+//		MockHttpServletResponse:
+//	           Status = 200
+//	    Error message = null
+//	          Headers = [Content-Type:"application/json"]
+//	     Content type = application/json
+//	             
+//	    Forwarded URL = null
+//	   Redirected URL = null
 	}
+
+//	@GetMapping("/{animalId}")
+//	public Animal findAnimal(@PathVariable final Long animalId) {
+//		return animalService.findAnimalById(animalId);
+//	}
+//
+//	@PostMapping
+//	@ResponseStatus(HttpStatus.CREATED)
+//	public Animal createAnimal(@RequestBody @Valid final AnimalDto newAnimalDto) {
+//		return animalService.createAnimal(newAnimalDto);
+//	}
+//
+//	@PutMapping("/{animalId}")
+//	@ResponseStatus(HttpStatus.ACCEPTED)
+//	public Animal updateAnimal(@PathVariable Long animalId, @Valid @RequestBody final AnimalDto newAnimalDto) {
+//		return animalService.updateAnimal(animalId, newAnimalDto);
+//	}
+//
+//	@DeleteMapping("/{animalId}")
+//	public ResponseEntity<GenericResponseDto> deleteAnimal(@PathVariable final Long animalId) {
+//		animalService.deleteAnimal(animalId);
+//		return new ResponseEntity<>(GenericResponseDto.builder().message(String.format("Animal with id %d is deleted", animalId)).build(), HttpStatus.OK);
+//	}
+//
+//	@GetMapping
+//	public List<AnimalResponseDto> listAllAnimals(Pageable pageable) {
+//		return animalService.findAllAnimals(pageable);
+//	}
 
 //	@Test
 //	public void givenNonIntegerUpperLimit_thenStatus400_NotIntegerError() throws Exception {

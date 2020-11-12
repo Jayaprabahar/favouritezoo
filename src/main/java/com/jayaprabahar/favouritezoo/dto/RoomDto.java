@@ -5,6 +5,7 @@ package com.jayaprabahar.favouritezoo.dto;
 
 import javax.validation.constraints.NotNull;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**
@@ -19,6 +20,7 @@ import lombok.Data;
  *
  */
 @Data
+@AllArgsConstructor
 public class RoomDto {
 
 	@NotNull(message = "Title field is missing")

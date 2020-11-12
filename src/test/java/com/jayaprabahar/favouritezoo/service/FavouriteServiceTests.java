@@ -1,0 +1,101 @@
+/**
+ * 
+ */
+package com.jayaprabahar.favouritezoo.service;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.util.List;
+
+import org.apache.commons.collections4.CollectionUtils;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import com.jayaprabahar.favouritezoo.dto.AnimalDto;
+import com.jayaprabahar.favouritezoo.dto.RoomDto;
+import com.jayaprabahar.favouritezoo.errorhandling.FavouriteNotFoundException;
+import com.jayaprabahar.favouritezoo.errorhandling.RoomNotFoundException;
+import com.jayaprabahar.favouritezoo.model.Animal;
+import com.jayaprabahar.favouritezoo.model.Favourite;
+import com.jayaprabahar.favouritezoo.model.Room;
+
+/**
+ * <p> Project : favouritezoo </p>
+ * <p> Title : FavouriteServiceTests.java </p>
+ * <p> Description: TODO </p>
+ * <p> Created: Nov 12, 2020 </p>
+ * 
+ * @since 1.0.0
+ * @version 1.0.0
+ * @author <a href="mailto:jpofficial@gmail.com">Jayaprabahar</a>
+ *
+ */
+@SpringBootTest
+class FavouriteServiceTests {
+
+	@Autowired
+	private FavouriteService favouriteService;
+	@Autowired
+	private AnimalService animalService;
+	@Autowired
+	private RoomService roomService;
+
+	@Test
+	void testCreateFavourite() {
+		Animal animal = animalService.createAnimal(new AnimalDto("Puppy", ">=", 34l));
+		Room room = roomService.createRoom(new RoomDto("Yellow", 50l));
+		Favourite favourite = favouriteService.createFavourite(room.getId(), animal.getId());
+
+		assertNotNull(favourite);
+		assertTrue(favourite.getId() >= 1);
+		assertEquals(50l, favourite.getRoom().getId());
+		assertEquals(34l, favourite.getAnimal().getId());
+	}
+
+	@Test
+	void testAllNotFoundExceptions() {
+		Animal animal = animalService.createAnimal(new AnimalDto("Puppy", ">=", 34l));
+		Room room = roomService.createRoom(new RoomDto("Yellow", 50l));
+
+		assertThrows(RoomNotFoundException.class, () -> {
+			favouriteService.createFavourite(room.getId() + 1, animal.getId());
+		});
+		assertThrows(RoomNotFoundException.class, () -> {
+			favouriteService.createFavourite(room.getId(), animal.getId() + 1);
+		});
+
+		favouriteService.createFavourite(room.getId(), animal.getId());
+
+		assertThrows(FavouriteNotFoundException.class, () -> {
+			favouriteService.findFavourite(room.getId() + 1, animal.getId());
+		});
+
+		assertNotNull(favouriteService.findFavourite(room.getId(), animal.getId()));
+
+		assertThrows(FavouriteNotFoundException.class, () -> {
+			favouriteService.deleteFavourite(room.getId() + 1, animal.getId());
+		});
+
+	}
+
+	/**
+	 * 
+	 */
+	@Test
+	void testGetFavouriteRoomsByAnimalId() {
+		Animal animal = animalService.createAnimal(new AnimalDto("Puppy", ">=", 34l));
+		Room room = roomService.createRoom(new RoomDto("Yellow", 50l));
+		Room room2 = roomService.createRoom(new RoomDto("Green", 40l));
+
+		favouriteService.createFavourite(room.getId(), animal.getId());
+		favouriteService.createFavourite(room2.getId(), animal.getId());
+
+		List<String> favRooms = favouriteService.getFavouriteRoomsByAnimalId(animal.getId());
+
+		assertTrue(CollectionUtils.containsAll(favRooms, List.of("Yellow", "Green")));
+	}
+}

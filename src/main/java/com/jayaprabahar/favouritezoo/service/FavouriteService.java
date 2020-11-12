@@ -68,7 +68,7 @@ public class FavouriteService {
 		});
 	}
 
-	public List<String> getFavouriteRooms(Long animalId) {
+	public List<String> getFavouriteRoomsByAnimalId(Long animalId) {
 		Animal animal = animalRepository.findById(animalId).orElseThrow(() -> new AnimalNotFoundException(animalId));
 
 		return favouriteRepository.findByAnimal(animal).stream().map(e -> e.getRoom().getTitle()).collect(Collectors.toList());

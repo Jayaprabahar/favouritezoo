@@ -70,7 +70,7 @@ public class FavouriteController {
 	 */
 	@GetMapping("/animals/{animalId}")
 	public List<String> listOfFavoriteRooms(@PathVariable(name = "animalId") final Long animalId) {
-		return favouriteService.getFavouriteRooms(animalId);
+		return favouriteService.getFavouriteRoomsByAnimalId(animalId);
 	}
 
 }

@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -43,17 +44,20 @@ public class Animal {
 	@Column(name = "animal_id")
 	private long id;
 
+	@NotNull
 	private String title;
-	
+
+	@NotNull
+	private String type;
+
+	@NotNull
+	private long preference;
+
 	@CreationTimestamp
 	private LocalDateTime added;
 
 	@UpdateTimestamp
 	private LocalDateTime located;
-
-	private String type;
-
-	private long preference;
 
 	@OneToOne(targetEntity = Room.class)
 	private Room room;

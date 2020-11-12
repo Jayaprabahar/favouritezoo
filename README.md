@@ -3,7 +3,8 @@
 1.	@ResponseStatus(HttpStatus.OK) is not added for getMappings, because it is a default status code
 1.	Since there is only one implementation, I didn't add Service interface
 1.	Gatling scripting
-* Code formatting inside lambdas
+1.	Code formatting inside lambdas
+1.	For specifc requirements ony i returned animals with AnimalResponseDTO, For all other calls, I returned Animal entity itself
 
 
 

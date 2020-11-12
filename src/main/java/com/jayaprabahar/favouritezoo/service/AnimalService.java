@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.jayaprabahar.favouritezoo.dto.AnimalDto;
@@ -40,14 +38,6 @@ public class AnimalService {
 		this.animalRepository = animalRepository;
 	}
 
-	public List<Animal> findAllAnimals(String sortingVaraible, String sortingOrder) {
-		return animalRepository.findAll(Sort.by(Direction.fromString(sortingOrder), sortingVaraible));
-	}
-
-	public Animal findAnimalById(Long id) {
-		return animalRepository.findById(id).orElseThrow(() -> new AnimalNotFoundException(id));
-	}
-
 	public Animal createAnimal(AnimalDto newAnimalDto) {
 		return animalRepository.save(Animal.builder().title(newAnimalDto.getTitle()).type(newAnimalDto.getType()).preference(newAnimalDto.getPreference()).build());
 	}
@@ -65,6 +55,10 @@ public class AnimalService {
 		animalRepository.findById(id).ifPresentOrElse(e -> animalRepository.delete(e), () -> {
 			throw new AnimalNotFoundException(id);
 		});
+	}
+
+	public Animal findAnimalById(Long id) {
+		return animalRepository.findById(id).orElseThrow(() -> new AnimalNotFoundException(id));
 	}
 
 	/**
