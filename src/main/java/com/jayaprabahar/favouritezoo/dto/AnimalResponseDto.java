@@ -15,7 +15,7 @@ import lombok.Data;
 /**
  * <p> Project : favouritezoo </p>
  * <p> Title : AnimalResponseDto.java </p>
- * <p> Description: TODO </p>
+ * <p> Description: Data Transfer object for Animal response </p>
  * <p> Created: Nov 11, 2020 </p>
  * 
  * @since 1.0.0

@@ -18,7 +18,7 @@ import com.jayaprabahar.favouritezoo.repository.AnimalRepository;
 /**
  * <p> Project : favouritezoo </p>
  * <p> Title : AnimalService.java </p>
- * <p> Description: TODO </p>
+ * <p> Description: Service layer for animal entities </p>
  * <p> Created: Nov 10, 2020 </p>
  * 
  * @since 1.0.0
@@ -34,14 +34,30 @@ public class AnimalService {
 	/**
 	 * 
 	 */
+	/**
+	 * @param animalRepository
+	 */
 	public AnimalService(AnimalRepository animalRepository) {
 		this.animalRepository = animalRepository;
 	}
 
+	/**
+	 * Creates Animal or throw exception
+	 * 
+	 * @param newAnimalDto
+	 * @return Animal
+	 */
 	public Animal createAnimal(AnimalDto newAnimalDto) {
-		return animalRepository.save(Animal.builder().title(newAnimalDto.getTitle()).type(newAnimalDto.getType()).preference(newAnimalDto.getPreference()).build());
+		return animalRepository.save(Animal.builder().title(newAnimalDto.getTitle()).type(newAnimalDto.getType())
+				.preference(newAnimalDto.getPreference()).build());
 	}
 
+	/**
+	 * Updates Animal entity or throw exception
+	 * @param id
+	 * @param newAnimalDto
+	 * @return
+	 */
 	public Animal updateAnimal(Long id, AnimalDto newAnimalDto) {
 		return animalRepository.findById(id).map(animal -> {
 			animal.setTitle(newAnimalDto.getTitle());
@@ -51,17 +67,29 @@ public class AnimalService {
 		}).orElseThrow(() -> new AnimalNotFoundException(id));
 	}
 
+	/**
+	 * Deletes Animal entity or throw exception
+	 * @param id
+	 */
 	public void deleteAnimal(Long id) {
 		animalRepository.findById(id).ifPresentOrElse(e -> animalRepository.delete(e), () -> {
 			throw new AnimalNotFoundException(id);
 		});
 	}
 
+	/**
+	 * Finds animal by Id
+	 * 
+	 * @param id
+	 * @return Animal
+	 */
 	public Animal findAnimalById(Long id) {
 		return animalRepository.findById(id).orElseThrow(() -> new AnimalNotFoundException(id));
 	}
 
 	/**
+	 * Finds All Animals and returns based on pageable sorting
+	 * 
 	 * @param pageable
 	 * @return
 	 */

@@ -30,7 +30,7 @@ import com.jayaprabahar.favouritezoo.service.RoomService;
 /**
  * <p> Project : favouritezoo </p>
  * <p> Title : RoomController.java </p>
- * <p> Description: TODO </p>
+ * <p> Description: Controller class for room entity </p>
  * <p> Created: Nov 10, 2020 </p>
  * 
  * @since 1.0.0
@@ -53,28 +53,59 @@ public class RoomController {
 		this.roomService = roomService;
 	}
 
+	/**
+	 * Finds all rooms
+	 * 
+	 * @param pageable sorting enabled
+	 * @return List<Room> 
+	 */
 	@GetMapping
 	public List<Room> findAllRooms(Pageable pageable) {
 		return roomService.findAllRooms(pageable);
 	}
 
+	/**
+	 * FindRoom by roomId
+	 * 
+	 * @param roomId
+	 * @return Room
+	 */
 	@GetMapping("/{roomId}")
 	public Room findRoom(@PathVariable final Long roomId) {
 		return roomService.findByRoomId(roomId);
 	}
 
+	/**
+	 * Creates room
+	 * 
+	 * @param roomDto
+	 * @return Room
+	 */
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public Room createRoom(@RequestBody @Valid final RoomDto roomDto) {
 		return roomService.createRoom(roomDto);
 	}
 
+	/**
+	 * Updates room by roomId
+	 * 
+	 * @param roomId
+	 * @param roomDto
+	 * @return Room
+	 */
 	@PutMapping("/{roomId}")
 	@ResponseStatus(HttpStatus.ACCEPTED)
 	public Room updateRoom(@PathVariable Long roomId, @Valid @RequestBody final RoomDto roomDto) {
 		return roomService.updateRoom(roomId, roomDto);
 	}
 
+	/**
+	 * Deletes room by roomId
+	 * 
+	 * @param roomId
+	 * @return GenericResponseDto
+	 */
 	@DeleteMapping("/{roomId}")
 	public ResponseEntity<GenericResponseDto> deleteRoom(@PathVariable final Long roomId) {
 		roomService.deleteRoom(roomId);

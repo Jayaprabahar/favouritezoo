@@ -19,7 +19,7 @@ import com.jayaprabahar.favouritezoo.dto.GenericResponseDto;
 /**
  * <p> Project : favouritezoo </p>
  * <p> Title : ApiControllerAdvice.java </p>
- * <p> Description: TODO </p>
+ * <p> Description: RestControllerAdvice class</p>
  * <p> Created: Nov 10, 2020 </p>
  * 
  * @since 1.0.0
@@ -31,7 +31,10 @@ import com.jayaprabahar.favouritezoo.dto.GenericResponseDto;
 public class ApiControllerAdvice {
 
 	/**
+	 * Handles all the validation violations and converts to easy readable errors with comma separated
 	 * 
+	 * @param e
+	 * @return
 	 */
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -41,6 +44,12 @@ public class ApiControllerAdvice {
 				HttpStatus.BAD_REQUEST);
 	}
 
+	/**
+	 * Handles all unique constraint violations
+	 * 
+	 * @param e
+	 * @return
+	 */
 	@ExceptionHandler(ConstraintViolationException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public ResponseEntity<GenericResponseDto> handleConstraintViolationException(ConstraintViolationException e) {

@@ -16,7 +16,7 @@ import com.jayaprabahar.favouritezoo.repository.RoomRepository;
 /**
  * <p> Project : favouritezoo </p>
  * <p> Title : RoomService.java </p>
- * <p> Description: TODO </p>
+ * <p> Description: Service layer for Room entities</p>
  * <p> Created: Nov 10, 2020 </p>
  * 
  * @since 1.0.0
@@ -36,18 +36,43 @@ public class RoomService {
 		this.roomRepository = roomRepository;
 	}
 
+	/**
+	 * Finds all rooms and performs sorting if provided
+	 * 
+	 * @param pageable
+	 * @return
+	 */
 	public List<Room> findAllRooms(Pageable pageable) {
 		return roomRepository.findAll(pageable).toList();
 	}
 
+	/**
+	 * Finds rooms by id, if exist
+	 * 
+	 * @param roomId
+	 * @return
+	 */
 	public Room findByRoomId(Long roomId) {
 		return roomRepository.findById(roomId).orElseThrow(() -> new RoomNotFoundException(roomId));
 	}
 
+	/**
+	 * Creates room base on Room request DTO
+	 * 
+	 * @param newRoomDto
+	 * @return Room
+	 */
 	public Room createRoom(RoomDto newRoomDto) {
 		return roomRepository.save(Room.builder().title(newRoomDto.getTitle()).size(newRoomDto.getSize()).build());
 	}
 
+	/**
+	 * Updates room base on Room request DTO
+	 * 
+	 * @param id
+	 * @param newRoomDto
+	 * @return Room
+	 */
 	public Room updateRoom(Long id, RoomDto newRoomDto) {
 		return roomRepository.findById(id).map(room -> {
 			room.setTitle(newRoomDto.getTitle());
@@ -56,6 +81,11 @@ public class RoomService {
 		}).orElseThrow(() -> new RoomNotFoundException(id));
 	}
 
+	/**
+	 * Deletes room base on roomId
+	 * 
+	 * @param roomId
+	 */
 	public void deleteRoom(Long roomId) {
 		roomRepository.findById(roomId).ifPresentOrElse(e -> roomRepository.delete(e), () -> {
 			throw new RoomNotFoundException(roomId);

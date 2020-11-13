@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 /**
  * <p> Project : favouritezoo </p>
  * <p> Title : RoomNotFoundException.java </p>
- * <p> Description: TODO </p>
+ * <p> Description: RoomNotFoundException </p>
  * <p> Created: Nov 10, 2020 </p>
  * 
  * @since 1.0.0
@@ -26,7 +26,7 @@ public class RoomNotFoundException extends RuntimeException {
 	private static final long serialVersionUID = -5096280190287824998L;
 
 	/**
-	 * 
+	 * @param id
 	 */
 	public RoomNotFoundException(Long id) {
 		super(String.format("Could not find room with id %s", id));

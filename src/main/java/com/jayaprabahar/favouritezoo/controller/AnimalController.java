@@ -30,7 +30,7 @@ import com.jayaprabahar.favouritezoo.service.AnimalService;
 /**
  * <p> Project : favouritezoo </p>
  * <p> Title : AnimalController.java </p>
- * <p> Description: TODO </p>
+ * <p> Description: Controller class wrt Animal table </p>
  * <p> Created: Nov 10, 2020 </p>
  * 
  * @since 1.0.0
@@ -52,29 +52,61 @@ public class AnimalController {
 		this.animalService = animalService;
 	}
 
+	/**
+	 * Finds animal by id
+	 * 
+	 * @param animalId
+	 * @return Animal - Animal Object or exception is thrown
+	 */
 	@GetMapping("/{animalId}")
 	public Animal findAnimal(@PathVariable final Long animalId) {
 		return animalService.findAnimalById(animalId);
 	}
 
+	/**
+	 * Creates Animal object or exception is thrown if id is not found
+	 * 
+	 * @param newAnimalDto
+	 * @return Animal - Animal Object or exception is thrown
+	 */
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public Animal createAnimal(@RequestBody @Valid final AnimalDto newAnimalDto) {
 		return animalService.createAnimal(newAnimalDto);
 	}
 
+	/**
+	 * Updates Animal object or exception is thrown if id is not found
+	 * 
+	 * @param animalId
+	 * @param newAnimalDto
+	 * @return Animal - Animal Object or exception is thrown
+	 */
 	@PutMapping("/{animalId}")
 	@ResponseStatus(HttpStatus.ACCEPTED)
 	public Animal updateAnimal(@PathVariable Long animalId, @Valid @RequestBody final AnimalDto newAnimalDto) {
 		return animalService.updateAnimal(animalId, newAnimalDto);
 	}
 
+	/**
+	 * Deletes Animal object or exception is thrown if id is not found
+	 * 
+	 * @param animalId
+	 * @return ResponseEntity<GenericResponseDto>
+	 */
 	@DeleteMapping("/{animalId}")
 	public ResponseEntity<GenericResponseDto> deleteAnimal(@PathVariable final Long animalId) {
 		animalService.deleteAnimal(animalId);
-		return new ResponseEntity<>(GenericResponseDto.builder().message(String.format("Animal with id %d is deleted", animalId)).status(200).build(), HttpStatus.OK);
+		return new ResponseEntity<>(GenericResponseDto.builder()
+				.message(String.format("Animal with id %d is deleted", animalId)).status(200).build(), HttpStatus.OK);
 	}
 
+	/**
+	 * Lists AllAnimals in with sorting option
+	 * 
+	 * @param pageable
+	 * @return List<AnimalResponseDto>
+	 */
 	@GetMapping
 	public List<AnimalResponseDto> listAllAnimals(Pageable pageable) {
 		return animalService.findAllAnimals(pageable);

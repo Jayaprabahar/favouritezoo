@@ -20,7 +20,7 @@ import com.jayaprabahar.favouritezoo.service.AnimalRoomService;
 /**
  * <p> Project : favouritezoo </p>
  * <p> Title : AnimalRoomController.java </p>
- * <p> Description: TODO </p>
+ * <p> Description: Controller class wrt Animal & Room combination </p>
  * <p> Created: Nov 10, 2020 </p>
  * 
  * @since 1.0.0
@@ -38,26 +38,60 @@ public class AnimalRoomController {
 		this.animalRoomService = animalRoomService;
 	}
 
+	/**
+	 * Places the animal into the room
+	 * 
+	 * @param roomId
+	 * @param animalId
+	 * @return Animal - Updated animal object
+	 */
 	@PatchMapping("/rooms/{roomId}/animals/{animalId}")
 	public Animal placeAnimalIntoRoom(@PathVariable final Long roomId, @PathVariable final Long animalId) {
 		return animalRoomService.addRoomForAnimal(roomId, animalId);
 	}
 
+	/**
+	 * Moves one animal from one room to another
+	 * 
+	 * @param roomId
+	 * @param animalId
+	 * @param newRoomId
+	 * @return Animal - Updated animal object
+	 */
 	@PatchMapping("/rooms/{roomId}/animals/{animalId}/{newRoomId}")
-	public Animal moveAnimalBetweenRooms(@PathVariable final Long roomId, @PathVariable final Long animalId, @PathVariable Long newRoomId) {
+	public Animal moveAnimalBetweenRooms(@PathVariable final Long roomId, @PathVariable final Long animalId,
+			@PathVariable Long newRoomId) {
 		return animalRoomService.updateNewRoomForAnimal(roomId, animalId, newRoomId);
 	}
 
+	/**
+	 * Removes one animal from one room to another
+	 * 
+	 * @param animalId
+	 * @return Animal - Updated animal object
+	 */
 	@PatchMapping("/rooms/animals/{animalId}")
 	public Animal removeRoomForAnimal(@PathVariable final Long animalId) {
 		return animalRoomService.removeRoomForAnimal(animalId);
 	}
 
+	/**
+	 * List All the Animals In Room
+	 * 
+	 * @param roomId
+	 * @param pageable
+	 * @return List<AnimalResponseDto> - List of AnimalResponseDto
+	 */
 	@GetMapping("/rooms/{roomId}/animals")
 	public List<AnimalResponseDto> listAllAnimalsInRoom(@PathVariable final Long roomId, Pageable pageable) {
 		return animalRoomService.findAllAnimalsInRoom(roomId, pageable);
 	}
 
+	/**
+	 * Returns the map of all rooms and the possible happy animal lists
+	 * 
+	 * @return Map<String, Long>
+	 */
 	@GetMapping("/happyAnimals")
 	public Map<String, Long> listHappyAnimals() {
 		return animalRoomService.getHappyAnimalsListPerRoom();

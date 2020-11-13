@@ -11,7 +11,7 @@ import com.jayaprabahar.favouritezoo.model.Room;
 /**
  * <p> Project : favouritezoo </p>
  * <p> Title : RoomRepository.java </p>
- * <p> Description: TODO </p>
+ * <p> Description: Repository class for Room </p>
  * <p> Created: Nov 10, 2020 </p>
  * 
  * @since 1.0.0

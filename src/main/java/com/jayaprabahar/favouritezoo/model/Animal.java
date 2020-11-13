@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 /**
  * <p> Project : favouritezoo </p>
  * <p> Title : Animal.java </p>
- * <p> Description: TODO </p>
+ * <p> Description: Animal Entity </p>
  * <p> Created: Nov 10, 2020 </p>
  * 
  * @since 1.0.0

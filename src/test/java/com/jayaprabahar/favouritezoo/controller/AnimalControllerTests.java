@@ -34,7 +34,7 @@ import com.jayaprabahar.favouritezoo.service.AnimalService;
 /**
  * <p> Project : favouritezoo </p>
  * <p> Title : AnimalControllerTests.java </p>
- * <p> Description: TODO </p>
+ * <p> Description: AnimalControllerTests </p>
  * <p> Created: Nov 11, 2020 </p>
  * 
  * @since 1.0.0

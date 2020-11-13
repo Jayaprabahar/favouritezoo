@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 /**
  * <p> Project : favouritezoo </p>
  * <p> Title : AnimalNotInTheRoomException.java </p>
- * <p> Description: TODO </p>
+ * <p> Description: AnimalNotInTheRoomException </p>
  * <p> Created: Nov 10, 2020 </p>
  * 
  * @since 1.0.0
@@ -26,7 +26,8 @@ public class AnimalNotInTheRoomException extends RuntimeException {
 	private static final long serialVersionUID = -5096280190287824998L;
 
 	/**
-	 * 
+	 * @param animalId
+	 * @param roomId
 	 */
 	public AnimalNotInTheRoomException(Long animalId, Long roomId) {
 		super(String.format("Animal %s is not inside the room %s", animalId, roomId));

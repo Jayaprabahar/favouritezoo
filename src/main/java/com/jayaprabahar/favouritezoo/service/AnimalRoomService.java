@@ -25,7 +25,7 @@ import com.jayaprabahar.favouritezoo.util.FavouriteZooScriptEngine;
 /**
  * <p> Project : favouritezoo </p>
  * <p> Title : AnimalRoomService.java </p>
- * <p> Description: TODO </p>
+ * <p> Description: Service layer for animalroom combination entities</p>
  * <p> Created: Nov 10, 2020 </p>
  * 
  * @since 1.0.0
@@ -41,19 +41,24 @@ public class AnimalRoomService {
 	private FavouriteZooScriptEngine scriptEngine;
 
 	/**
-	 * 
+	 * @param animalRepository
+	 * @param roomRepository
+	 * @param scriptEngine
 	 */
 	@Autowired
-	public AnimalRoomService(AnimalRepository animalRepository, RoomRepository roomRepository, FavouriteZooScriptEngine scriptEngine) {
+	public AnimalRoomService(AnimalRepository animalRepository, RoomRepository roomRepository,
+			FavouriteZooScriptEngine scriptEngine) {
 		this.animalRepository = animalRepository;
 		this.roomRepository = roomRepository;
 		this.scriptEngine = scriptEngine;
 	}
 
 	/**
+	 * Add room for animal based on animal and roomId
+	 * 
 	 * @param roomId
 	 * @param animalId
-	 * @return 
+	 * @return Animal - Updated
 	 */
 	public Animal addRoomForAnimal(Long roomId, Long animalId) {
 		Room room = roomRepository.findById(roomId).orElseThrow(() -> new RoomNotFoundException(roomId));
@@ -63,10 +68,12 @@ public class AnimalRoomService {
 	}
 
 	/**
+	 * Updates room for animal based on animal, roomId and newRoomId
+	 * 
 	 * @param roomId
 	 * @param animalId
 	 * @param newRoomId
-	 * @return 
+	 * @return Animal - Updated
 	 */
 	public Animal updateNewRoomForAnimal(Long roomId, Long animalId, Long newRoomId) {
 		Room room = roomRepository.findById(roomId).orElseThrow(() -> new RoomNotFoundException(roomId));
@@ -83,8 +90,10 @@ public class AnimalRoomService {
 	}
 
 	/**
+	 * Removes room for animal based on animalId
+	 * 
 	 * @param animalId
-	 * @return 
+	 * @return Animal - Updated
 	 */
 	public Animal removeRoomForAnimal(Long animalId) {
 		return animalRepository.findById(animalId).map(animal -> {
@@ -94,26 +103,34 @@ public class AnimalRoomService {
 	}
 
 	/**
+	 * Find the list of all AnimalsInRoom
+	 * 
 	 * @param roomId
-	 * @param sortingOrder 
-	 * @param sortingVaraible 
-	 * @return
+	 * @param pageable
+	 * @return List<AnimalResponseDto>
 	 */
 	public List<AnimalResponseDto> findAllAnimalsInRoom(Long roomId, Pageable pageable) {
 		Room room = roomRepository.findById(roomId).orElseThrow(() -> new RoomNotFoundException(roomId));
 
-		return animalRepository.findAllByRoom(room, pageable).toList().stream().map(e -> AnimalResponseDto.builder().title(e.getTitle()).located(e.getLocated()).build()).collect(Collectors.toList());
+		return animalRepository.findAllByRoom(room, pageable).toList().stream()
+				.map(e -> AnimalResponseDto.builder().title(e.getTitle()).located(e.getLocated()).build())
+				.collect(Collectors.toList());
 	}
 
 	/**
-	 * @return
+	 * Returns the map of all rooms and the possible happy animal lists
+	 * @return Map<String, Long> 
 	 */
 	public Map<String, Long> getHappyAnimalsListPerRoom() {
 		List<Animal> animals = animalRepository.findAll();
 		Map<String, Long> roomHappyAnimalMap = new HashMap<>();
 
-		roomRepository.findAll().forEach(eachRoom -> roomHappyAnimalMap.put(eachRoom.getTitle(),
-				animals.stream().filter(animal -> scriptEngine.evaluateBooleanScripts(eachRoom.getSize() + animal.getType() + String.valueOf(animal.getPreference()))).count()));
+		roomRepository.findAll()
+				.forEach(
+						eachRoom -> roomHappyAnimalMap.put(eachRoom.getTitle(),
+								animals.stream().filter(animal -> scriptEngine.evaluateBooleanScripts(
+										eachRoom.getSize() + animal.getType() + String.valueOf(animal.getPreference())))
+										.count()));
 		return roomHappyAnimalMap;
 	}
 

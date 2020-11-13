@@ -14,7 +14,7 @@ import com.jayaprabahar.favouritezoo.model.Room;
 /**
  * <p> Project : favouritezoo </p>
  * <p> Title : AnimalRepository.java </p>
- * <p> Description: TODO </p>
+ * <p> Description: Repository class for Animal</p>
  * <p> Created: Nov 10, 2020 </p>
  * 
  * @since 1.0.0
@@ -23,15 +23,10 @@ import com.jayaprabahar.favouritezoo.model.Room;
  *
  */
 @Repository
-public interface AnimalRepository extends JpaRepository<Animal, Long>{
+public interface AnimalRepository extends JpaRepository<Animal, Long> {
 
-	/**
-	 * @param animalId
-	 * @param sort
-	 * @return
-	 */
 	Page<Animal> findAllById(Long animalId, Pageable pageable);
-	
+
 	Page<Animal> findAllByRoom(Room room, Pageable pageable);
 
 }
