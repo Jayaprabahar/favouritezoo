@@ -139,26 +139,228 @@ $ mvn clean install
 
 ```
 
+## Schemas
+
+
+```
+GenericResponseDto{
+	timestamp	string($date-time)
+	status	integer($int32)
+	error	string
+	message	string
+}
+```
+```
+AnimalResponseDto {
+	title	string
+	added	string($date-time)
+	located	string($date-time)
+}
+```
+```
+AnimalDto {
+	title*	string
+	type*	string
+	preference	integer($int64)
+}
+```
+```
+Animal {
+	id	integer($int64)
+	title*	string
+	type*	string
+	preference*	integer($int64)
+	added	string($date-time)
+	located	string($date-time)   
+	room	Room {...}
+}
+```
+```
+Room {
+	id	integer($int64)
+	title*	string
+	size*	integer($int64)
+	created	string($date-time)
+	animals	[...]
+}
+```
+```
+Favourite {
+	id	integer($int64)
+	room*	Room {...}
+	animal*	Animal {...} 
+}
+```
+```
+RoomDto {
+	title*	string
+	size*	integer($int64)
+ 
+}
+```
+
 
 ## Scenarios
 
-### /animals - GET
 
+##### Animals
+
+######  Create animal
 ```
-curl -X GET "http://localhost:8080/favouritezoo/animals?offset=0&sort[sorted]=true&sort[unsorted]=true&sort[empty]=true&pageNumber=0&pageSize=0&paged=true&unpaged=true" -H  "accept: */*"
-[
-  {
-    "title": "string",
-    "added": "2020-11-13T04:34:52.533Z",
-    "located": "2020-11-13T04:34:52.533Z"
-  }
-]
+$ curl -X POST "http://localhost:8080/favouritezoo/animals" -H  "Content-Type: application/json" -d "{\"title\":\"Cow\",\"type\":\"<=\",\"preference\":20}"
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   183    0   140  100    43  10000   3071 --:--:-- --:--:-- --:--:-- 14076{"id":3,"title":"Cow","type":"<=","preference":20,"added":"2020-11-13T05:51:51.3857982","located":"2020-11-13T05:51:51.3857982","room":null}
 ```
 
-### /animals/{animalId} - GET
-
+######  Find animal
 ```
-curl -X GET "http://localhost:8080/favouritezoo/animals/2" -H  "accept: */*"
+$ curl -X GET "http://localhost:8080/favouritezoo/animals"
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   160    0   160    0     0   3636      0 --:--:-- --:--:-- --:--:--  3720[{"title":"Cow","added":"2020-11-13T05:50:06.058086"},{"title":"Cow","added":"2020-11-13T05:51:48.850876"},{"title":"Cow","added":"2020-11-13T05:51:51.385798"}]
 ```
 
-I did not provide all the scenarios, as it is very easy and User friendly to copy the "openapi/favouritezoo-api.yaml" into https://editor.swagger.io/ to play with it.
+######  Update animal
+```
+$ curl -X PUT "http://localhost:8080/favouritezoo/animals/1" -H  "Content-Type: application/json" -d "{\"title\":\"New Cow\",\"type\":\"<=\",\"preference\":100}"
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   192    0   144  100    48   3130   1043 --:--:-- --:--:-- --:--:--  4266{"id":1,"title":"New Cow","type":"<=","preference":100,"added":"2020-11-13T05:50:06.058086","located":"2020-11-13T05:53:56.4642369","room":null}
+```
+
+######  Delete animal
+```
+$ curl -X DELETE "http://localhost:8080/favouritezoo/animals/1"
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100    95    0    95    0     0   3958      0 --:--:-- --:--:-- --:--:--  4130{"timestamp":"2020-11-13T05:54:35.067232","status":200,"message":"Animal with id 1 is deleted"}
+```
+
+
+##### Rooms
+
+######  Find All Room
+```
+$ curl -X GET "http://localhost:8080/favouritezoo/rooms"
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100    87    0    87    0     0   2071      0 --:--:-- --:--:-- --:--:--  2023[{"id":1,"title":"Room","size":20,"created":"2020-11-13T05:49:03.966447","animals":[]}]
+```
+
+######  Create Room
+```
+$ curl -X POST "http://localhost:8080/favouritezoo/rooms" -H  "Content-Type: application/json" -d "{\"title\":\"Big Room\",\"size\":35}"
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   122    0    92  100    30   6571   2142 --:--:-- --:--:-- --:--:--  9384{"id":2,"title":"Big Room","size":35,"created":"2020-11-13T05:58:05.8759452","animals":null}
+```
+
+
+######  find Room by Id
+```
+$ curl -X GET "http://localhost:8080/favouritezoo/rooms/2"
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100    89    0    89    0     0   2870      0 --:--:-- --:--:-- --:--:--  2870{"id":2,"title":"Big Room","size":35,"created":"2020-11-13T05:58:05.875945","animals":[]}
+```
+
+######  Update Room
+```
+$ curl -X PUT "http://localhost:8080/favouritezoo/rooms/2" -H  "Content-Type: application/json" -d "{\"title\":\"JP Room\",\"size\":10100}"
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   123    0    91  100    32   5055   1777 --:--:-- --:--:-- --:--:--  7235{"id":2,"title":"JP Room","size":10100,"created":"2020-11-13T05:58:05.875945","animals":[]}
+```
+
+######  Delete Room
+```
+$ curl -X DELETE "http://localhost:8080/favouritezoo/rooms/2"
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100    94    0    94    0     0   3760      0 --:--:-- --:--:-- --:--:--  3760{"timestamp":"2020-11-13T06:00:19.8682745","status":200,"message":"Room with id 2 is deleted"}
+```
+
+
+##### Animal Room Combinations
+
+######  Place Animal in a Room
+```
+$ curl -X PATCH "http://localhost:8080/favouritezoo/rooms/1/animals/2"
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   220    0   220    0     0   5365      0 --:--:-- --:--:-- --:--:--  5500{"id":2,"title":"Cow","type":"<=","preference":20,"added":"2020-11-13T05:51:48.850876","located":"2020-11-13T06:02:48.5770772","room":{"id":1,"title":"Room","size":20,"created":"2020-11-13T05:49:03.966447","animals":[]}}
+```
+
+######  Move Animal between Rooms
+```
+$ curl -X PATCH "http://localhost:8080/favouritezoo/rooms/1/animals/2/3"
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   224    0   224    0     0  11200      0 --:--:-- --:--:-- --:--:-- 11789{"id":2,"title":"Cow","type":"<=","preference":20,"added":"2020-11-13T05:51:48.850876","located":"2020-11-13T06:04:56.4241757","room":{"id":3,"title":"New Room","size":20,"created":"2020-11-13T06:04:07.798786","animals":[]}}
+```
+
+
+######  Delete animal from the room
+```
+$ curl -X PATCH "http://localhost:8080/favouritezoo/rooms/animals/2"
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   138    0   138    0     0   9857      0 --:--:-- --:--:-- --:--:-- 10615{"id":2,"title":"Cow","type":"<=","preference":20,"added":"2020-11-13T05:51:48.850876","located":"2020-11-13T06:05:38.308335","room":null}
+```
+
+######  List of animals in the room
+```
+$ curl -X GET "http://localhost:8080/favouritezoo/rooms/1/animals"
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100     2    0     2    0     0     42      0 --:--:-- --:--:-- --:--:--    44[]
+
+$ curl -X GET "http://localhost:8080/favouritezoo/rooms/2/animals"
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   130    0   130    0     0  10000      0 --:--:-- --:--:-- --:--:-- 10000{"timestamp":"2020-11-13T05:06:27.437+00:00","status":404,"error":"Not Found","message":"","path":"/favouritezoo/rooms/2/animals"}
+```
+
+
+######  List of happyAnimals
+```
+$ curl -X GET "http://localhost:8080/favouritezoo/happyAnimals"
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100    23    0    23    0     0    479      0 --:--:-- --:--:-- --:--:--   489{"New Room":2,"Room":2}
+```
+
+
+##### Favourie Room Animal Combinations
+
+######  Assign Favourite Room for an animal
+```
+$ curl -X POST "http://localhost:8080/favouritezoo/favourite/rooms/3/animals/2" -d ""
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   253    0   253    0     0  15812      0 --:--:-- --:--:-- --:--:-- 14882{"id":3,"room":{"id":3,"title":"New Room","size":20,"created":"2020-11-13T06:04:07.798786","animals":[]},"animal":{"id":2,"title":"Cow","type":"<=","preference":20,"added":"2020-11-13T05:51:48.850876","located":"2020-11-13T06:05:38.308335","room":null}}
+
+
+$ curl -X POST "http://localhost:8080/favouritezoo/favourite/rooms/4/animals/2" -d ""
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100    94    0    94    0     0   4947      0 --:--:-- --:--:-- --:--:--  4947{"timestamp":"2020-11-13T06:09:47.3043586","status":400,"message":"Information already exist"}
+```
+
+
+######  Unassign Favourite Room for an animal
+```
+$ curl -X DELETE "http://localhost:8080/favouritezoo/favourite/rooms/3/animals/2"
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   121    0   121    0     0   7117      0 --:--:-- --:--:-- --:--:--  7117{"timestamp":"2020-11-13T06:10:50.0593964","status":200,"message":"Favourite room is unassigned for room 3 and animal 2"}
+```
+
+######  Get Assigned Favourite Room 
+```
+$ curl -X GET "http://localhost:8080/favouritezoo/favourite/animals/2"
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100    12    0    12    0     0    857      0 --:--:-- --:--:-- --:--:--   923["New Room"]
+```
