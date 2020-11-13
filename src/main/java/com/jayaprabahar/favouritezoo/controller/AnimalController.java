@@ -102,7 +102,7 @@ public class AnimalController {
 	}
 
 	/**
-	 * Lists AllAnimals in with sorting option
+	 * Lists All Animals in with sorting option
 	 * 
 	 * @param pageable
 	 * @return List<AnimalResponseDto>

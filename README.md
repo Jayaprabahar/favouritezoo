@@ -1,14 +1,51 @@
-1.	Perfomed Constructor autowiring which is best to maintain immutability
-1.	Created separate request POJO for entities to avoid vulnearble injections "https://rules.sonarsource.com/java/tag/spring/RSPEC-4684"
-1.	@ResponseStatus(HttpStatus.OK) is not added for getMappings, because it is a default status code
-1.	Since there is only one implementation, I didn't add Service interface
-1.	Gatling scripting
-1.	Code formatting inside lambdas
-1.	For specifc requirements ony i returned animals with AnimalResponseDTO, For all other calls, I returned Animal entity itself
+Add Load testing script
 
 
+# Welcome
 
-# DOCKER
+Welcome to Favourite Zoo !!
+You know the case study!!!
+
+
+# TechStack
+
+1.	spring-boot-starter-parent	2.3.5.RELEASE
+2.	Open JDK 11
+3.	Springdoc Openapi 1.2.32
+
+# Points
+
+1.	It is a SpringBootApplication
+2.	Three are 19 end points exposed. 
+3.	Exceptions handled are AnimalNotFoundException, RoomNotFoundException, AnimalNotInTheRoomException, FavouriteNotFoundException, ConstraintViolationException and MethodArgumentNotValidException
+4.	I didnt palce all the exceptions at the Controller advice, as they are already handled by Specific exception classes
+5.	In-Code documentation and namings are made very clear.
+6.	Performed Constructor autowiring which is best to maintain immutability
+7.	Created separate request POJO for entities to avoid vulnearble injections via entity beans as request "https://rules.sonarsource.com/java/tag/spring/RSPEC-4684"
+8.	@ResponseStatus(HttpStatus.OK) is not added for getMappings, because it is a default status code
+9.	Since there is only one implementation, I didn't add Service interface
+10.	I used nashorn script engine for the mathematical evalautions such as "<=". Please refer FavouriteZooScriptEngine.java
+11.	Used lombok across the project to reduce boilerplate code
+12.	@ResponseStatus is not added in few controller methods. Means they will return the default status code "OK"
+13.	Although the requirement is only for single entries, I used plural names for CRUD operations, as per the standard
+14. Custom Input and Output DTOs are used on few scenarios.
+15. Input validation is done via javax.validation and hibernate annotations
+16.	Animal-Room combinations are made with PatchMapping. Because part of the Animal Entity is updated with rooms field.
+17.	List of Happy animals are fetched based on number of animals fall under the rooms side.
+18.	UniqueConstraint condition is added for Favourite to allow only valid animal and room ids
+19.	For the unique key IDENTITY stratergy is used, because it generates separate sequence for each entity not a shared one.
+20.	JpaRepository is used for DB transactios, which made less or no work to write any scripts
+21.	I disabled stacktrace to be shown to end user. Comment the following properties in the application properties table. server.error.include-stacktrace
+22.	For unittesting, I used simple Junit, supported by SpringBootTest. For JPA, I used @DataJpaTest and for controller class I used Mokito and Spring MockMvc
+
+
+# OpenApi 3 Specification
+
+This application automatically generated the OpenApi 3 Specification at the "http://localhost:8080/favouritezoo/api-docs".
+Please put them in the swagger editor to play with it.
+
+
+# Dockers
 
 ## Run on local docker engine
  
@@ -31,7 +68,8 @@ I already pushed the image into my dockerhub. Its a public one. You can pull fro
 *	docker pull jayaprabahar/favouritezoo:latest
 *	docker run -p 8080:8080 jayaprabahar/favouritezoo
 
-# CONTIANER ORCHESTRATION & CLOUD
+
+# Kubernetes & Coud
 
 I added k8s configuration for deployment & service. 
 
@@ -44,7 +82,6 @@ Example
 *	docker tag favouritezoo jpvotingappacr.azurecr.io/favouritezoo:latest
 
 
-
 # Database
 As context root is added in the application, all the API endpoints as well as h2-console will be accessed with prefixed context root
 
@@ -52,55 +89,14 @@ As context root is added in the application, all the API endpoints as well as h2
 
 Please uncomment the "automatically generate SQL schema" configurations in application properties to let spring to automatically generate the SQL schema under the specified location "Uncomment to automatically generate SQL Schema at the specified target"
 
-# TODO
-Add Swagger 3
-Add Unit testing
-Add Load testing script
-
-# Welcome
-
-Welcome to Smallest Dividable Number within a range calcualtor !!
-You know the case study!!!
 
 
-## Solution source
+# Flexibility
 
-This solution is based on unique prime factorization theorem. 
-It says "Every positive integer n > 1 can be represented in exactly one way as a product of prime powers"
-
-Refer here for the details:- 
-[Canonical representation of a positive integer](https://en.wikipedia.org/wiki/Fundamental_theorem_of_arithmetic#Canonical_representation_of_a_positive_integer)
+1. Application name is added in the application properties to make it suitable to be detected as a microservice with eureka
 
 
-## Features/Constraints
-
-1.	It is a SpringBootApplication
-2.	There are two API calls written with POST methods for loading the upper limit and Get method for getting the response
-3.	Session based data sharing between different API Calls. There are many better ways like redis, jwt. Couldn't opt due to time constraint.
-4.	Three are 3 different type of Testing features implemented. Integration Testing, Unit testing the business logic and Performance testing.
-5.	Allowed accept headers are JSON and XML
-6.	Exceptions handled are UpperLimitNotSetException, UpperLimitReachedException, ConstraintViolationException and Not Acceptable (406)
-7.	In-Code documentation and namings are made very clear.
-8.	Test data csv is added and read through junit5 CsvFileSource
-9.	The maximum time taken is less than 10 milliseconds in most of the cases.
-
-
-## Versions
-
-1.	spring-boot-starter-parent	2.3.1.RELEASE
-2.	Open JDK 11
-3.	SpringRunner 4.3
-
-
-## Flexibility
-
-1. Application name added to be suitable to be detected as a microservice with eureka
-2. Server port is set to 8000, to avoid port conflict issue 8080
-3. Allowed max limit value can be edited in application properties both in src and test
-4.	Trying to benchmark the response with less than 20 milliseconds in the test application properties.
-
-
-## Build
+# Build
 
 ```
 $ mvn clean install
@@ -109,202 +105,60 @@ $ mvn clean install
 You should able to see the application building, test execution for a total 12 testcases (10 + 1 + 1) and build success
 
 ```
+$ mvn clean install
 [INFO] Scanning for projects...
 [INFO]
-[INFO] ---< com.jayaprabahar.europeana.assignment:smallestdividablenumber >----
-[INFO] Building smallestdividablenumber 0.0.1-SNAPSHOT
+[INFO] -------------------< com.jayaprabahar:favouritezoo >--------------------
+[INFO] Building favouritezoo 0.0.1-SNAPSHOT
 [INFO] --------------------------------[ jar ]---------------------------------
-```
-
-```
-[INFO] --- maven-surefire-plugin:2.22.2:test (default-test) @ smallestdividablenumber ---
 [INFO]
-[INFO] -------------------------------------------------------
-[INFO]  T E S T S
-[INFO] -------------------------------------------------------
+[INFO] --- maven-clean-plugin:3.1.0:clean (default-clean) @ favouritezoo ---
 ```
 
 ```
-[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.991 s - in com.jayaprabahar.europeana.assignment.integrationtest.ApplnIntegrationTest
-[INFO] Running com.jayaprabahar.europeana.assignment.performance.ApplnPerformanceTest
-```
-
-```
-[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.044 s - in com.jayaprabahar.europeana.assignment.performance.ApplnPerformanceTest
-[INFO] Running com.jayaprabahar.europeana.assignment.unittest.ApplnLogicTest
-[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in com.jayaprabahar.europeana.assignment.unittest.ApplnLogicTest
-2020-06-30 02:50:46.656  INFO 22628 --- [extShutdownHook] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
-[INFO]
 [INFO] Results:
 [INFO]
-[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 46, Failures: 0, Errors: 0, Skipped: 0
 [INFO]
 [INFO]
-[INFO] --- maven-jar-plugin:3.2.0:jar (default-jar) @ smallestdividablenumber ---
-[INFO] Building jar: C:\Jayaprabahar\git\smallestdividablenumber\target\smallestdividablenumber-0.0.1-SNAPSHOT.jar
+[INFO] --- maven-jar-plugin:3.2.0:jar (default-jar) @ favouritezoo ---
+[INFO] Building jar: C:\Users\x087934\Desktop\favouritezoo\target\favouritezoo-0.0.1-SNAPSHOT.jar
 [INFO]
-[INFO] --- spring-boot-maven-plugin:2.3.1.RELEASE:repackage (repackage) @ smallestdividablenumber ---
+[INFO] --- spring-boot-maven-plugin:2.3.5.RELEASE:repackage (repackage) @ favouritezoo ---
 [INFO] Replacing main artifact with repackaged archive
 [INFO]
+[INFO] --- maven-install-plugin:2.5.2:install (default-install) @ favouritezoo ---
+[INFO] Installing C:\Users\x087934\Desktop\favouritezoo\target\favouritezoo-0.0.1-SNAPSHOT.jar to C:\Users\x087934\.m2\repository\com\jayaprabahar\favouritezoo\0.0.1-SNAPSHOT\favouritezoo-0.0.1-SNAPSHOT.jar
+[INFO] Installing C:\Users\x087934\Desktop\favouritezoo\pom.xml to C:\Users\x087934\.m2\repository\com\jayaprabahar\favouritezoo\0.0.1-SNAPSHOT\favouritezoo-0.0.1-SNAPSHOT.pom
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time:  10.499 s
-[INFO] Finished at: 2020-06-30T02:50:47+02:00
+[INFO] Total time:  35.861 s
+[INFO] Finished at: 2020-11-13T05:13:27+01:00
 [INFO] ------------------------------------------------------------------------
-```
-
-
-## Run
-
-```
-$ mvn spring-boot:run
-[INFO] Scanning for projects...
-[INFO]
-[INFO] ---< com.jayaprabahar.europeana.assignment:smallestdividablenumber >----
-[INFO] Building smallestdividablenumber 0.0.1-SNAPSHOT
-[INFO] --------------------------------[ jar ]---------------------------------
-.
-.
-.
-[INFO] --- spring-boot-maven-plugin:2.3.1.RELEASE:run (default-cli) @ smallestdividablenumber ---
-[INFO] Attaching agents: []
-.
-.
-.
-  .   ____          _            __ _ _
- /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
-( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
- \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
-  '  |____| .__|_| |_|_| |_\__, | / / / /
- =========|_|==============|___/=/_/_/_/
- :: Spring Boot ::        (v2.3.1.RELEASE)
-.
-.
-.
-2020-06-30 03:20:48.950  INFO 7540 --- [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8000 (http) with context path ''
-2020-06-30 03:20:48.957  INFO 7540 --- [  restartedMain] j.e.a.SmallestDividableNumberApplication : Started SmallestDividableNumberApplication in 1.753 seconds (JVM running for 2.198)
 
 ```
 
 
 ## Scenarios
 
-### Post Upperlimit - Correct Data - HTTP/1.1 201 - Created
+### /animals - GET
 
 ```
-$ curl -i -d "upperLimit=12" http://localhost:8000/europeana/smallestdividablenumber
-  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
-                                 Dload  Upload   Total   Spent    Left  Speed
-100    13    0     0  100    13      0    619 --:--:-- --:--:-- --:--:--   650
-HTTP/1.1 201
-Set-Cookie: JSESSIONID=B692D092EF261BCB4C579FD8934AF79D; Path=/; HttpOnly
-Content-Length: 0
-Date: Tue, 30 Jun 2020 01:25:48 GMT
+curl -X GET "http://localhost:8080/favouritezoo/animals?offset=0&sort[sorted]=true&sort[unsorted]=true&sort[empty]=true&pageNumber=0&pageSize=0&paged=true&unpaged=true" -H  "accept: */*"
+[
+  {
+    "title": "string",
+    "added": "2020-11-13T04:34:52.533Z",
+    "located": "2020-11-13T04:34:52.533Z"
+  }
+]
 ```
 
-
-### Post Upperlimit - Non integer - HTTP/1.1 400 - Bad Request -Not a number error
-
-```
-$ curl -i -d "upperLimit=asdasd12" http://localhost:8000/europeana/smallestdividablenumber
-  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
-                                 Dload  Upload   Total   Spent    Left  Speed
-100   328    0   309  100    19  16263   1000 --:--:-- --:--:-- --:--:-- 18222HTTP/1.1 400
-Content-Type: application/json
-Transfer-Encoding: chunked
-Date: Tue, 30 Jun 2020 01:40:56 GMT
-Connection: close
-
-{"timestamp":"2020-06-30T01:40:56.604+00:00","status":400,"error":"Bad Request","message":"Failed to convert value of type 'java.lang.String' to required type 'java.lang.Integer'; nested exception is java.lang.NumberFormatException: For input string: \"asdasd12\"","path":"/europeana/smallestdividablenumber"}
-```
-
-### Post Upperlimit - bigger than allowed range - HTTP/1.1 400 - Bad Request - Allowed upper limit Error
+### /animals/{animalId} - GET
 
 ```
-$ curl -i -d "upperLimit=1212" http://localhost:8000/europeana/smallestdividablenumber
-  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
-                                 Dload  Upload   Total   Spent    Left  Speed
-100   177    0   162  100    15   8100    750 --:--:-- --:--:-- --:--:--  8850HTTP/1.1 400
-Content-Type: application/json
-Transfer-Encoding: chunked
-Date: Tue, 30 Jun 2020 01:41:04 GMT
-Connection: close
-
-{"timestamp":"2020-06-30T01:41:04.480+00:00","status":400,"error":"Bad Request","message":"Allowed upper limit is 25","path":"/europeana/smallestdividablenumber"}
+curl -X GET "http://localhost:8080/favouritezoo/animals/2" -H  "accept: */*"
 ```
 
-### Post Upperlimit - Negative number - HTTP/1.1 400 - Bad Request - Only positive numbers are allowed Error
-
-```
-
-$ curl -i -d "upperLimit=-123" http://localhost:8000/europeana/smallestdividablenumber
-  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
-                                 Dload  Upload   Total   Spent    Left  Speed
-100   211    0   196  100    15  21777   1666 --:--:-- --:--:-- --:--:-- 23444HTTP/1.1 400
-Content-Type: application/json
-Transfer-Encoding: chunked
-Date: Tue, 30 Jun 2020 01:41:13 GMT
-Connection: close
-
-{"timestamp":"2020-06-30T01:41:13.206+00:00","status":400,"error":"Bad Request","message":"setUpperLimit.upperLimit: Only positive numbers are allowed","path":"/europeana/smallestdividablenumber"}
-```
-
-### Post Upperlimit - No post parameter - HTTP/1.1 400 - Bad Request - Required information missing error 
-
-```
-$ curl -i -d "" http://localhost:8000/europeana/smallestdividablenumber
-  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
-                                 Dload  Upload   Total   Spent    Left  Speed
-100   191    0   191    0     0   9550      0 --:--:-- --:--:-- --:--:-- 10052HTTP/1.1 400
-Content-Type: application/json
-Transfer-Encoding: chunked
-Date: Tue, 30 Jun 2020 01:41:36 GMT
-Connection: close
-
-{"timestamp":"2020-06-30T01:41:36.337+00:00","status":400,"error":"Bad Request","message":"Required Integer parameter 'upperLimit' is not present","path":"/europeana/smallestdividablenumber"}
-```
-
-### Get result - When no upper limit is set- HTTP/1.1 412 - Preconditons failed - Upper limit is not set error
-
-```
-$ curl -i http://localhost:8000/europeana/smallestdividablenumber
-  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
-                                 Dload  Upload   Total   Spent    Left  Speed
-100   167    0   167    0     0  16700      0 --:--:-- --:--:-- --:--:-- 18555HTTP/1.1 412
-Set-Cookie: JSESSIONID=50D5A1929A325C9D95D6255FFFF07232; Path=/; HttpOnly
-Content-Type: application/json
-Transfer-Encoding: chunked
-Date: Tue, 30 Jun 2020 01:55:31 GMT
-
-{"timestamp":"2020-06-30T01:55:31.441+00:00","status":412,"error":"Precondition Failed","message":"Upper limit is not set","path":"/europeana/smallestdividablenumber"}
-```
-
-As curl dont support sessions, i used Postman. 
-
-### Get result - Accept header JSON/ Default
-
-```
-{
-    "upperLimit": 12,
-    "smallestdividablenumber": 27720,
-    "timeTakenInMillis": 11
-}
-```
-
-### Get result - Accept header XML
-
-```
-<Response>
-    <upperLimit>12</upperLimit>
-    <smallestdividablenumber>27720</smallestdividablenumber>
-    <timeTakenInMillis>6</timeTakenInMillis>
-</Response>
-
-```
-
-*Have fun!*
-
-Best Regards,
-Jayaprabahar
-jpofficial@gmail.com
+I did not provide all the scenarios, as it is very easy and User friendly to copy the "openapi/favouritezoo-api.yaml" into https://editor.swagger.io/ to play with it.
