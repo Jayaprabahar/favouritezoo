@@ -39,7 +39,7 @@ public class FavouriteController {
 	}
 
 	@GetMapping("/rooms/{roomId}/animals/{animalId}")
-	public Favourite findFavouriteRoomForAnimal(@PathVariable(name = "roomId") final Long roomId, @PathVariable(name = "animalId") final Long animalId) {
+	public Favourite findAssignedFavouriteRoomForAnimal(@PathVariable(name = "roomId") final Long roomId, @PathVariable(name = "animalId") final Long animalId) {
 		return favouriteService.findFavourite(roomId, animalId);
 	}
 
@@ -62,7 +62,7 @@ public class FavouriteController {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<GenericResponseDto> unAssignFavouriteRoomForAnimal(@PathVariable(name = "roomId") final Long roomId, @PathVariable(name = "animalId") final Long animalId) {
 		favouriteService.deleteFavourite(roomId, animalId);
-		return new ResponseEntity<>(GenericResponseDto.builder().message(String.format("Favourite room is unassigned for room %d and animal %d", roomId, animalId)).build(), HttpStatus.OK);
+		return new ResponseEntity<>(GenericResponseDto.builder().message(String.format("Favourite room is unassigned for room %d and animal %d", roomId, animalId)).status(200).build(), HttpStatus.OK);
 	}
 
 	/**

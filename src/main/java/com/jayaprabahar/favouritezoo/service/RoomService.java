@@ -40,7 +40,7 @@ public class RoomService {
 		return roomRepository.findAll(pageable).toList();
 	}
 
-	public Room findRoomById(Long roomId) {
+	public Room findByRoomId(Long roomId) {
 		return roomRepository.findById(roomId).orElseThrow(() -> new RoomNotFoundException(roomId));
 	}
 

@@ -60,7 +60,7 @@ public class RoomController {
 
 	@GetMapping("/{roomId}")
 	public Room findRoom(@PathVariable final Long roomId) {
-		return roomService.findRoomById(roomId);
+		return roomService.findByRoomId(roomId);
 	}
 
 	@PostMapping
@@ -78,7 +78,7 @@ public class RoomController {
 	@DeleteMapping("/{roomId}")
 	public ResponseEntity<GenericResponseDto> deleteRoom(@PathVariable final Long roomId) {
 		roomService.deleteRoom(roomId);
-		return new ResponseEntity<>(GenericResponseDto.builder().message(String.format("Room with id %d is deleted", roomId)).build(), HttpStatus.OK);
+		return new ResponseEntity<>(GenericResponseDto.builder().message(String.format("Room with id %d is deleted", roomId)).status(200).build(), HttpStatus.OK);
 	}
 
 }

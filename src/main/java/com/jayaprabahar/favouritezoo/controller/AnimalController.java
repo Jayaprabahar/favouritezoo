@@ -72,7 +72,7 @@ public class AnimalController {
 	@DeleteMapping("/{animalId}")
 	public ResponseEntity<GenericResponseDto> deleteAnimal(@PathVariable final Long animalId) {
 		animalService.deleteAnimal(animalId);
-		return new ResponseEntity<>(GenericResponseDto.builder().message(String.format("Animal with id %d is deleted", animalId)).build(), HttpStatus.OK);
+		return new ResponseEntity<>(GenericResponseDto.builder().message(String.format("Animal with id %d is deleted", animalId)).status(200).build(), HttpStatus.OK);
 	}
 
 	@GetMapping

@@ -58,7 +58,7 @@ class RoomServiceTests {
 		long lastGeneratedPrimaryKey = roomService.createRoom(new RoomDto("Red", 35l)).getId();
 
 		assertThrows(RoomNotFoundException.class, () -> {
-			roomService.findRoomById(lastGeneratedPrimaryKey + 1);
+			roomService.findByRoomId(lastGeneratedPrimaryKey + 1);
 		});
 
 		final RoomDto newRoomDto2 = new RoomDto("Blue", 25l);
