@@ -1,6 +1,3 @@
-Add Load testing script
-
-
 # Welcome
 
 Welcome to Favourite Zoo !!
@@ -12,6 +9,7 @@ You know the case study!!!
 1.	spring-boot-starter-parent	2.3.5.RELEASE
 2.	Open JDK 11
 3.	Springdoc Openapi 1.2.32
+
 
 # Points
 
@@ -26,17 +24,16 @@ You know the case study!!!
 9.	Since there is only one implementation, I didn't add Service interface
 10.	I used nashorn script engine for the mathematical evalautions such as "<=". Please refer FavouriteZooScriptEngine.java
 11.	Used lombok across the project to reduce boilerplate code
-12.	@ResponseStatus is not added in few controller methods. Means they will return the default status code "OK"
-13.	Although the requirement is only for single entries, I used plural names for CRUD operations, as per the standard
-14. Custom Input and Output DTOs are used on few scenarios.
-15. Input validation is done via javax.validation and hibernate annotations
-16.	Animal-Room combinations are made with PatchMapping. Because part of the Animal Entity is updated with rooms field.
-17.	List of Happy animals are fetched based on number of animals fall under the rooms side.
-18.	UniqueConstraint condition is added for Favourite to allow only valid animal and room ids
-19.	For the unique key IDENTITY stratergy is used, because it generates separate sequence for each entity not a shared one.
-20.	JpaRepository is used for DB transactios, which made less or no work to write any scripts
-21.	I disabled stacktrace to be shown to end user. Comment the following properties in the application properties table. server.error.include-stacktrace
-22.	For unittesting, I used simple Junit, supported by SpringBootTest. For JPA, I used @DataJpaTest and for controller class I used Mokito and Spring MockMvc
+12.	Although the requirement is only for single entries, I used plural names for CRUD operations, as per the standard
+13. Custom Input and Output DTOs are used on few scenarios.
+14. Input validation is done via javax.validation and hibernate annotations
+15.	Animal-Room combinations are made with PatchMapping. Because part of the Animal Entity is updated with rooms field.
+16.	List of Happy animals are fetched based on number of animals fall under the rooms side.
+17.	UniqueConstraint condition is added for Favourite to allow only valid animal and room ids
+18.	For the unique key IDENTITY stratergy is used, because it generates separate sequence for each entity not a shared one.
+19.	JpaRepository is used for DB transactios, which made less or no work to write any scripts
+20.	I disabled stacktrace to be shown to end user. Comment the following properties in the application properties to view the stacktrace for the exceptions. server.error.include-stacktrace
+21.	For unittesting, I used simple Junit, supported by SpringBootTest. For JPA, I used @DataJpaTest and for controller class I used Mokito and Spring MockMvc
 
 
 # OpenApi 3 Specification
@@ -56,39 +53,38 @@ A simple working dockerfile implementation is added as part of this source code.
 If you feel it is working smooth, then
 *	docker push jayaprabahar/favouritezoo:latest
 
-## 	Push image into your Dockerhub
-*	docker tag favouritezoo jayaprabahar/favouritezoo:latest
-*	docker push jayaprabahar/favouritezoo:latest
-The push refers to repository [docker.io/jayaprabahar/favouritezoo]
-latest: digest: sha256:6847213ec5e98ce26c0f5247f44db356147a2e48e38bff4b9c8619d482d625bf size: 1166
-
 ## 	Pull image from my/your Dockerhub
 
 I already pushed the image into my dockerhub. Its a public one. You can pull from three or you can pull from your own docker registry (acr/dockerhub), and run it
 *	docker pull jayaprabahar/favouritezoo:latest
 *	docker run -p 8080:8080 jayaprabahar/favouritezoo
 
+## 	Push image into your Dockerhub
 
-# Kubernetes & Coud
+Incase if you want to push into your own dockerhub registry, follow the below comments
+
+*	docker tag favouritezoo jayaprabahar/favouritezoo:latest
+*	docker push jayaprabahar/favouritezoo:latest
+The push refers to repository [docker.io/jayaprabahar/favouritezoo]
+latest: digest: sha256:6847213ec5e98ce26c0f5247f44db356147a2e48e38bff4b9c8619d482d625bf size: 1166
+
+# Kubernetes & Cloud
 
 I added k8s configuration for deployment & service. 
 
 This configuration will work seemlessly in Azure, if you already tagged the image with you AzureContainerRegistry
-
 *	az acr list --resource-group VotingAppResourceGroup --query "[].{acrLoginServer:loginServer}" --output table
 *	docker tag favouritezoo <Your_ACR_Login_server>/favouritezoo:latest
 
 Example
 *	docker tag favouritezoo jpvotingappacr.azurecr.io/favouritezoo:latest
 
-
 # Database
-As context root is added in the application, all the API endpoints as well as h2-console will be accessed with prefixed context root
 
+As context root is added in the application, all the API endpoints as well as h2-console will be accessed with prefixed context root
 *	http://localhost:8080/favouritezoo/h2-console
 
-Please uncomment the "automatically generate SQL schema" configurations in application properties to let spring to automatically generate the SQL schema under the specified location "Uncomment to automatically generate SQL Schema at the specified target"
-
+Please uncomment the auto sql geneeration configurations in application properties to let spring to automatically generate the SQL schema under the specified location "Uncomment to automatically generate SQL Schema at the specified target"
 
 
 # Flexibility
@@ -102,7 +98,7 @@ Please uncomment the "automatically generate SQL schema" configurations in appli
 $ mvn clean install
 ```
 
-You should able to see the application building, test execution for a total 12 testcases (10 + 1 + 1) and build success
+You should able to see the application building, test execution for a total 46 testcases and build success
 
 ```
 $ mvn clean install
