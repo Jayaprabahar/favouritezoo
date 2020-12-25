@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.jayaprabahar.favouritezoo.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;

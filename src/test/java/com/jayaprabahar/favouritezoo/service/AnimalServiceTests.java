@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.jayaprabahar.favouritezoo.service;
 
 import static org.junit.Assert.assertTrue;
@@ -26,7 +23,7 @@ import com.jayaprabahar.favouritezoo.model.Animal;
 /**
  * <p> Project : favouritezoo </p>
  * <p> Title : AnimalServiceTests.java </p>
- * <p> Description: TODO </p>
+ * <p> Description: Tests AnimalService class </p>
  * <p> Created: Nov 12, 2020 </p>
  * 
  * @since 1.0.0
@@ -46,23 +43,23 @@ class AnimalServiceTests {
 
 	@Test
 	void testCreateWithAnimalDto() {
-		final AnimalDto newAnimalDto = new AnimalDto("Cow", null, 0l);
+		final AnimalDto newAnimalDto = new AnimalDto("Cow", null, 0L);
 		assertThrows(ConstraintViolationException.class, () -> {
 			animalService.createAnimal(newAnimalDto);
 		});
 
-		final AnimalDto newAnimalDto2 = new AnimalDto("New Cow", ">=", 20l);
+		final AnimalDto newAnimalDto2 = new AnimalDto("New Cow", ">=", 20L);
 		Animal animal = animalService.createAnimal(newAnimalDto2);
 
 		assertEquals("New Cow", animal.getTitle());
 		assertEquals(">=", animal.getType());
-		assertEquals(20l, animal.getPreference());
+		assertEquals(20L, animal.getPreference());
 		assertTrue(animal.getId() >= 1);
 	}
 
 	@Test
 	void testAnimalNotFoundException() {
-		long lastGeneratedPrimaryKey = animalService.createAnimal(new AnimalDto("New Cow2", ">=", 20l)).getId();
+		long lastGeneratedPrimaryKey = animalService.createAnimal(new AnimalDto("New Cow2", ">=", 20L)).getId();
 
 		assertThrows(AnimalNotFoundException.class, () -> {
 			animalService.findAnimalById(lastGeneratedPrimaryKey + 1);
@@ -70,7 +67,7 @@ class AnimalServiceTests {
 
 		animalService.findAnimalById(lastGeneratedPrimaryKey);
 
-		final AnimalDto newAnimalDto2 = new AnimalDto("Cat", "<=", 8l);
+		final AnimalDto newAnimalDto2 = new AnimalDto("Cat", "<=", 8L);
 		assertThrows(AnimalNotFoundException.class, () -> {
 			animalService.updateAnimal(lastGeneratedPrimaryKey + 1, newAnimalDto2);
 		});
@@ -85,11 +82,11 @@ class AnimalServiceTests {
 
 	@Test
 	void testFindAllAnimals() {
-		animalService.createAnimal(new AnimalDto("Small Cat", "<=", 10l));
-		animalService.createAnimal(new AnimalDto("Big Cat", "<=", 20l));
-		List<AnimalResponseDto> animalResponseDtos = animalService.findAllAnimals(Pageable.unpaged());
+		animalService.createAnimal(new AnimalDto("Small Cat", "<=", 10L));
+		animalService.createAnimal(new AnimalDto("Big Cat", "<=", 20L));
+		List<AnimalResponseDto> animalResponseDtoList = animalService.findAllAnimals(Pageable.unpaged());
 
-		assertTrue(animalResponseDtos.size() >= 2);
-		assertTrue(CollectionUtils.containsAll(animalResponseDtos.stream().map(AnimalResponseDto::getTitle).collect(Collectors.toList()), List.of("Small Cat", "Big Cat")));
+		assertTrue(animalResponseDtoList.size() >= 2);
+		assertTrue(CollectionUtils.containsAll(animalResponseDtoList.stream().map(AnimalResponseDto::getTitle).collect(Collectors.toList()), List.of("Small Cat", "Big Cat")));
 	}
 }

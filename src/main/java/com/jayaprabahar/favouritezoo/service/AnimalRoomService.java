@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.jayaprabahar.favouritezoo.service;
 
 import java.util.HashMap;
@@ -25,7 +22,7 @@ import com.jayaprabahar.favouritezoo.util.FavouriteZooScriptEngine;
 /**
  * <p> Project : favouritezoo </p>
  * <p> Title : AnimalRoomService.java </p>
- * <p> Description: Service layer for animalroom combination entities</p>
+ * <p> Description: Service layer for animal-room combination entities</p>
  * <p> Created: Nov 10, 2020 </p>
  * 
  * @since 1.0.0
@@ -36,14 +33,14 @@ import com.jayaprabahar.favouritezoo.util.FavouriteZooScriptEngine;
 @Service
 public class AnimalRoomService {
 
-	private AnimalRepository animalRepository;
-	private RoomRepository roomRepository;
-	private FavouriteZooScriptEngine scriptEngine;
+	private final AnimalRepository animalRepository;
+	private final RoomRepository roomRepository;
+	private final FavouriteZooScriptEngine scriptEngine;
 
 	/**
-	 * @param animalRepository
-	 * @param roomRepository
-	 * @param scriptEngine
+	 * @param animalRepository AnimalRepository
+	 * @param roomRepository RoomRepository
+	 * @param scriptEngine FavouriteZooScriptEngine
 	 */
 	@Autowired
 	public AnimalRoomService(AnimalRepository animalRepository, RoomRepository roomRepository,
@@ -54,10 +51,10 @@ public class AnimalRoomService {
 	}
 
 	/**
-	 * Add room for animal based on animal and roomId
+	 * Add room for animal based on animal id and roomId
 	 * 
-	 * @param roomId
-	 * @param animalId
+	 * @param roomId Long Room Id
+	 * @param animalId Long Animal Id
 	 * @return Animal - Updated
 	 */
 	public Animal addRoomForAnimal(Long roomId, Long animalId) {
@@ -70,9 +67,9 @@ public class AnimalRoomService {
 	/**
 	 * Updates room for animal based on animal, roomId and newRoomId
 	 * 
-	 * @param roomId
-	 * @param animalId
-	 * @param newRoomId
+	 * @param roomId Long Room Id
+	 * @param animalId Long Animal Id
+	 * @param newRoomId Long new Room Id
 	 * @return Animal - Updated
 	 */
 	public Animal updateNewRoomForAnimal(Long roomId, Long animalId, Long newRoomId) {
@@ -92,8 +89,8 @@ public class AnimalRoomService {
 	/**
 	 * Removes room for animal based on animalId
 	 * 
-	 * @param animalId
-	 * @return Animal - Updated
+	 * @param animalId Long Animal Id
+	 * @return Animal - Updated Animal
 	 */
 	public Animal removeRoomForAnimal(Long animalId) {
 		return animalRepository.findById(animalId).map(animal -> {
@@ -105,16 +102,15 @@ public class AnimalRoomService {
 	/**
 	 * Find the list of all AnimalsInRoom
 	 * 
-	 * @param roomId
-	 * @param pageable
-	 * @return List<AnimalResponseDto>
+	 * @param roomId Long Room Id
+	 * @param pageable Pageable
+	 * @return List<AnimalResponseDto> List of AnimalResponseDto
 	 */
 	public List<AnimalResponseDto> findAllAnimalsInRoom(Long roomId, Pageable pageable) {
 		Room room = roomRepository.findById(roomId).orElseThrow(() -> new RoomNotFoundException(roomId));
 
 		return animalRepository.findAllByRoom(room, pageable).toList().stream()
-				.map(e -> AnimalResponseDto.builder().title(e.getTitle()).located(e.getLocated()).build())
-				.collect(Collectors.toList());
+				.map(Animal::toAnimalResponseDto).collect(Collectors.toList());
 	}
 
 	/**
@@ -129,7 +125,7 @@ public class AnimalRoomService {
 				.forEach(
 						eachRoom -> roomHappyAnimalMap.put(eachRoom.getTitle(),
 								animals.stream().filter(animal -> scriptEngine.evaluateBooleanScripts(
-										eachRoom.getSize() + animal.getType() + String.valueOf(animal.getPreference())))
+										eachRoom.getSize() + animal.getType() + animal.getPreference()))
 										.count()));
 		return roomHappyAnimalMap;
 	}

@@ -1,13 +1,9 @@
-/**
- * 
- */
 package com.jayaprabahar.favouritezoo.controller;
 
 import java.util.List;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.jayaprabahar.favouritezoo.dto.GenericResponseDto;
 import com.jayaprabahar.favouritezoo.dto.RoomDto;
 import com.jayaprabahar.favouritezoo.model.Room;
 import com.jayaprabahar.favouritezoo.service.RoomService;
@@ -30,7 +25,7 @@ import com.jayaprabahar.favouritezoo.service.RoomService;
 /**
  * <p> Project : favouritezoo </p>
  * <p> Title : RoomController.java </p>
- * <p> Description: Controller class for room entity </p>
+ * <p> Description: Controller class for room entity related endpoints </p>
  * <p> Created: Nov 10, 2020 </p>
  * 
  * @since 1.0.0
@@ -43,18 +38,17 @@ import com.jayaprabahar.favouritezoo.service.RoomService;
 @Validated
 public class RoomController {
 
-	private RoomService roomService;
+	private final RoomService roomService;
 
 	/**
 	 * 
 	 */
-	@Autowired
 	public RoomController(RoomService roomService) {
 		this.roomService = roomService;
 	}
 
 	/**
-	 * Finds all rooms
+	 * Finds all rooms with pageable sorting and filtering options
 	 * 
 	 * @param pageable sorting enabled
 	 * @return List<Room> 
@@ -65,9 +59,9 @@ public class RoomController {
 	}
 
 	/**
-	 * FindRoom by roomId
+	 * Finds Room by roomId
 	 * 
-	 * @param roomId
+	 * @param roomId Long
 	 * @return Room
 	 */
 	@GetMapping("/{roomId}")
@@ -78,7 +72,7 @@ public class RoomController {
 	/**
 	 * Creates room
 	 * 
-	 * @param roomDto
+	 * @param roomDto RoomDto
 	 * @return Room
 	 */
 	@PostMapping
@@ -90,8 +84,8 @@ public class RoomController {
 	/**
 	 * Updates room by roomId
 	 * 
-	 * @param roomId
-	 * @param roomDto
+	 * @param roomId Long
+	 * @param roomDto RoomDto
 	 * @return Room
 	 */
 	@PutMapping("/{roomId}")
@@ -103,13 +97,13 @@ public class RoomController {
 	/**
 	 * Deletes room by roomId
 	 * 
-	 * @param roomId
+	 * @param roomId Long
 	 * @return GenericResponseDto
 	 */
 	@DeleteMapping("/{roomId}")
-	public ResponseEntity<GenericResponseDto> deleteRoom(@PathVariable final Long roomId) {
+	public ResponseEntity<String> deleteRoom(@PathVariable final Long roomId) {
 		roomService.deleteRoom(roomId);
-		return new ResponseEntity<>(GenericResponseDto.builder().message(String.format("Room with id %d is deleted", roomId)).status(200).build(), HttpStatus.OK);
+		return new ResponseEntity<>(String.format("Room with id %d is deleted", roomId), HttpStatus.NO_CONTENT);
 	}
 
 }

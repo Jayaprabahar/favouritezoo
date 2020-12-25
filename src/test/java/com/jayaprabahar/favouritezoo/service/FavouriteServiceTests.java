@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.jayaprabahar.favouritezoo.service;
 
 import static org.junit.Assert.assertNotNull;
@@ -27,7 +24,7 @@ import com.jayaprabahar.favouritezoo.model.Room;
 /**
  * <p> Project : favouritezoo </p>
  * <p> Title : FavouriteServiceTests.java </p>
- * <p> Description: TODO </p>
+ * <p> Description: Tests FavouriteService class </p>
  * <p> Created: Nov 12, 2020 </p>
  * 
  * @since 1.0.0
@@ -47,21 +44,21 @@ class FavouriteServiceTests {
 
 	@Test
 	void testCreateFavourite() {
-		Animal animal = animalService.createAnimal(new AnimalDto("Puppy", ">=", 34l));
-		Room room = roomService.createRoom(new RoomDto("Yellow", 50l));
+		Animal animal = animalService.createAnimal(new AnimalDto("Puppy", ">=", 34L));
+		Room room = roomService.createRoom(new RoomDto("Yellow", 50L));
 		Favourite favourite = favouriteService.createFavourite(room.getId(), animal.getId());
 
 		assertNotNull(favourite);
 		assertTrue(favourite.getId() >= 1);
-		assertEquals(50l, favourite.getRoom().getSize());
-		assertEquals(34l, favourite.getAnimal().getPreference());
+		assertEquals(50L, favourite.getRoom().getSize());
+		assertEquals(34L, favourite.getAnimal().getPreference());
 	}
 
 	@Test
 	void testAllNotFoundExceptions() {
-		Animal animal = animalService.createAnimal(new AnimalDto("Puppy", ">=", 34l));
-		Room room = roomService.createRoom(new RoomDto("Yellow", 50l));
-		Room room2 = roomService.createRoom(new RoomDto("Blue", 5l));
+		Animal animal = animalService.createAnimal(new AnimalDto("Puppy", ">=", 34L));
+		Room room = roomService.createRoom(new RoomDto("Yellow", 50L));
+		Room room2 = roomService.createRoom(new RoomDto("Blue", 5L));
 
 		assertThrows(RoomNotFoundException.class, () -> {
 			favouriteService.createFavourite(room.getId() + 10, animal.getId());
@@ -88,9 +85,9 @@ class FavouriteServiceTests {
 	 */
 	@Test
 	void testGetFavouriteRoomsByAnimalId() {
-		Animal animal = animalService.createAnimal(new AnimalDto("Puppy", ">=", 34l));
-		Room room = roomService.createRoom(new RoomDto("Yellow", 50l));
-		Room room2 = roomService.createRoom(new RoomDto("Green", 40l));
+		Animal animal = animalService.createAnimal(new AnimalDto("Puppy", ">=", 34L));
+		Room room = roomService.createRoom(new RoomDto("Yellow", 50L));
+		Room room2 = roomService.createRoom(new RoomDto("Green", 40L));
 
 		favouriteService.createFavourite(room.getId(), animal.getId());
 		favouriteService.createFavourite(room2.getId(), animal.getId());

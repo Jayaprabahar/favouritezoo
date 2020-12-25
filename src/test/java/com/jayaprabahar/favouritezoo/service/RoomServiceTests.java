@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.jayaprabahar.favouritezoo.service;
 
 import static org.junit.Assert.assertTrue;
@@ -20,7 +17,7 @@ import com.jayaprabahar.favouritezoo.model.Room;
 /**
  * <p> Project : favouritezoo </p>
  * <p> Title : RoomServiceTests.java </p>
- * <p> Description: TODO </p>
+ * <p> Description: Tests RoomService class </p>
  * <p> Created: Nov 12, 2020 </p>
  * 
  * @since 1.0.0
@@ -40,28 +37,28 @@ class RoomServiceTests {
 
 	@Test
 	void testCreateWithRoomDto() {
-		final RoomDto newRoomDto = new RoomDto(null, 0l);
+		final RoomDto newRoomDto = new RoomDto(null, 0L);
 		assertThrows(ConstraintViolationException.class, () -> {
 			roomService.createRoom(newRoomDto);
 		});
 
-		final RoomDto newRoomDto2 = new RoomDto("Blue", 25l);
+		final RoomDto newRoomDto2 = new RoomDto("Blue", 25L);
 		Room room = roomService.createRoom(newRoomDto2);
 
 		assertEquals("Blue", room.getTitle());
-		assertEquals(25l, room.getSize());
+		assertEquals(25L, room.getSize());
 		assertTrue(room.getId() >= 1);
 	}
 
 	@Test
 	void testRoomNotFoundException() {
-		long lastGeneratedPrimaryKey = roomService.createRoom(new RoomDto("Red", 35l)).getId();
+		long lastGeneratedPrimaryKey = roomService.createRoom(new RoomDto("Red", 35L)).getId();
 
 		assertThrows(RoomNotFoundException.class, () -> {
 			roomService.findByRoomId(lastGeneratedPrimaryKey + 1);
 		});
 
-		final RoomDto newRoomDto2 = new RoomDto("Blue", 25l);
+		final RoomDto newRoomDto2 = new RoomDto("Blue", 25L);
 		assertThrows(RoomNotFoundException.class, () -> {
 			roomService.updateRoom(lastGeneratedPrimaryKey + 1, newRoomDto2);
 		});

@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.jayaprabahar.favouritezoo.dto;
 
 import javax.validation.constraints.NotBlank;

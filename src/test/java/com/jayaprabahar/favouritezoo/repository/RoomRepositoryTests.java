@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.jayaprabahar.favouritezoo.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -23,7 +20,7 @@ import com.jayaprabahar.favouritezoo.model.Room;
 /**
  * <p> Project : favouritezoo </p>
  * <p> Title : RoomRepositoryTests.java </p>
- * <p> Description: TODO </p>
+ * <p> Description: Tests RoomRepository Class </p>
  * <p> Created: Nov 11, 2020 </p>
  * 
  * @since 1.0.0
@@ -48,7 +45,7 @@ class RoomRepositoryTests {
 	@Order(2)
 	void whenNoEntries_thenResultIsEmpty() {
 		assertTrue(roomRepository.findAll().isEmpty());
-		assertTrue(roomRepository.findById(1l).isEmpty());
+		assertTrue(roomRepository.findById(1L).isEmpty());
 	}
 
 	@Test
@@ -69,7 +66,7 @@ class RoomRepositoryTests {
 			roomRepository.save(room2);
 		});
 		
-		final Room room3 = Room.builder().size(10l).build();
+		final Room room3 = Room.builder().size(10L).build();
 		assertThrows(ConstraintViolationException.class, () -> {
 			roomRepository.save(room3);
 		});

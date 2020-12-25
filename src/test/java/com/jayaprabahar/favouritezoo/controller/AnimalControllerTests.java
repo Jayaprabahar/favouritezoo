@@ -1,20 +1,13 @@
-/**
- * 
- */
 package com.jayaprabahar.favouritezoo.controller;
 
-import static org.junit.Assert.assertTrue;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jayaprabahar.favouritezoo.dto.AnimalDto;
+import com.jayaprabahar.favouritezoo.errorhandling.AnimalNotFoundException;
+import com.jayaprabahar.favouritezoo.model.Animal;
+import com.jayaprabahar.favouritezoo.service.AnimalService;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.json.AutoConfigureJsonTesters;
@@ -25,11 +18,10 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jayaprabahar.favouritezoo.dto.AnimalDto;
-import com.jayaprabahar.favouritezoo.errorhandling.AnimalNotFoundException;
-import com.jayaprabahar.favouritezoo.model.Animal;
-import com.jayaprabahar.favouritezoo.service.AnimalService;
+import static org.junit.Assert.assertTrue;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * <p> Project : favouritezoo </p>
@@ -47,16 +39,9 @@ import com.jayaprabahar.favouritezoo.service.AnimalService;
 @AutoConfigureJsonTesters
 class AnimalControllerTests {
 
-	/**
-	 * @throws Exception 
-	 * 
-	 */
 	@Autowired
 	private MockMvc mockMvc;
 
-	@InjectMocks
-	private AnimalController animalController;
-	
 	@MockBean
 	private AnimalService animalService;
 
@@ -69,7 +54,7 @@ class AnimalControllerTests {
 
 	@Test
 	void should_RetrieveById_When_Exists() throws Exception {
-		Mockito.when(animalService.findAnimalById(1l)).thenReturn(Animal.builder().title("Cat").type(">=").preference(34).build());
+		Mockito.when(animalService.findAnimalById(1L)).thenReturn(Animal.builder().title("Cat").type(">=").preference(34).build());
 
 		mockMvc.perform(get("/animals/1"))
 				.andExpect(status().isOk())
@@ -80,11 +65,11 @@ class AnimalControllerTests {
 	
 	@Test
 	void should_AnimalNotFoundException_When_NotExists() throws Exception {
-		Mockito.when(animalService.findAnimalById(1l)).thenThrow(AnimalNotFoundException.class);
+		Mockito.when(animalService.findAnimalById(1L)).thenThrow(AnimalNotFoundException.class);
 
 		mockMvc.perform(get("/animals/1")
 			      .contentType(MediaType.APPLICATION_JSON))
-			      .andExpect(status().isNotFound())
+			      .andExpect(status().isBadRequest())
 			      .andExpect(result -> assertTrue(result.getResolvedException() instanceof AnimalNotFoundException));
 	}
 	
@@ -105,7 +90,7 @@ class AnimalControllerTests {
 	@Test
 	void should_Accept_When_Put() throws Exception {
 		AnimalDto newAnimalDto = new AnimalDto("Elephant", ">", 50);
-		Mockito.when(animalService.updateAnimal(2l, newAnimalDto)).thenReturn(Animal.builder().title("Elephant1").type(">").preference(50).build());
+		Mockito.when(animalService.updateAnimal(2L, newAnimalDto)).thenReturn(Animal.builder().title("Elephant1").type(">").preference(50).build());
 
 		mockMvc.perform(put("/animals/1")
 				.contentType(MediaType.APPLICATION_JSON)
@@ -116,11 +101,11 @@ class AnimalControllerTests {
 	@Test
 	void should_SuccessDelete_When_DeletingNotExists() throws Exception {
 		Mockito.doNothing()
-			.doThrow(new AnimalNotFoundException(1l))
-			.when(animalService).deleteAnimal(1l);
+			.doThrow(new AnimalNotFoundException(1L))
+			.when(animalService).deleteAnimal(1L);
 
 		mockMvc.perform(delete("/animals/1"))
-		 		.andExpect(status().isOk())
+		 		.andExpect(status().isNoContent())
 				.andExpect(jsonPath("$.status", Matchers.equalTo(200)))
 				.andExpect(jsonPath("$.message", Matchers.equalTo("Animal with id 1 is deleted")));
 	}

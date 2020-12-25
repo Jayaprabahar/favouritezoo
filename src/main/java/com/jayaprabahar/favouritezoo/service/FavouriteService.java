@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.jayaprabahar.favouritezoo.service;
 
 import java.util.List;
@@ -32,17 +29,14 @@ import com.jayaprabahar.favouritezoo.repository.RoomRepository;
 @Service
 public class FavouriteService {
 
-	private FavouriteRepository favouriteRepository;
-	private RoomRepository roomRepository;
-	private AnimalRepository animalRepository;
+	private final FavouriteRepository favouriteRepository;
+	private final RoomRepository roomRepository;
+	private final AnimalRepository animalRepository;
 
 	/**
-	 * 
-	 */
-	/**
-	 * @param favouriteRepository
-	 * @param roomRepository
-	 * @param animalRepository
+	 * @param favouriteRepository FavouriteRepository
+	 * @param roomRepository RoomRepository
+	 * @param animalRepository AnimalRepository
 	 */
 	public FavouriteService(FavouriteRepository favouriteRepository, RoomRepository roomRepository,
 			AnimalRepository animalRepository) {
@@ -54,9 +48,9 @@ public class FavouriteService {
 	/**
 	 * Find if any favourite combination is made or not
 	 * 
-	 * @param roomId
-	 * @param animalId
-	 * @return Favourite
+	 * @param roomId Long Room Id
+	 * @param animalId Long Animal Id
+	 * @return Favourite entity
 	 */
 	public Favourite findFavourite(Long roomId, Long animalId) {
 		Room room = roomRepository.findById(roomId).orElseThrow(() -> new RoomNotFoundException(roomId));
@@ -69,9 +63,9 @@ public class FavouriteService {
 	/**
 	 * creates favourite combination
 	 * 
-	 * @param roomId
-	 * @param animalId
-	 * @return Favourite
+	 * @param roomId Room Id
+	 * @param animalId Animal Id
+	 * @return Favourite Favourite entity
 	 */
 	public Favourite createFavourite(Long roomId, Long animalId) {
 		Room room = roomRepository.findById(roomId).orElseThrow(() -> new RoomNotFoundException(roomId));
@@ -83,24 +77,22 @@ public class FavouriteService {
 	/**
 	 * Deletes favourite combination, if present. If not throws exception
 	 *  
-	 * @param roomId
-	 * @param animalId
+	 * @param roomId Room id
+	 * @param animalId Animal id
 	 */
 	public void deleteFavourite(Long roomId, Long animalId) {
 		Room room = roomRepository.findById(roomId).orElseThrow(() -> new RoomNotFoundException(roomId));
 		Animal animal = animalRepository.findById(animalId).orElseThrow(() -> new AnimalNotFoundException(animalId));
 
-		favouriteRepository.findByRoomAndAnimal(room, animal).ifPresentOrElse(e -> favouriteRepository.delete(e),
-				() -> {
-					throw new FavouriteNotFoundException(roomId, animalId);
-				});
+		favouriteRepository.findByRoomAndAnimal(room, animal).ifPresentOrElse(favouriteRepository::delete,
+				() -> { throw new FavouriteNotFoundException(roomId, animalId); });
 	}
 
 	/**
-	 * Return Favourite ooms By AnimalId
+	 * Return Favourite rooms By AnimalId
 	 * 
-	 * @param animalId
-	 * @return
+	 * @param animalId Animal Id
+	 * @return List<String> List of fav room names
 	 */
 	public List<String> getFavouriteRoomsByAnimalId(Long animalId) {
 		Animal animal = animalRepository.findById(animalId).orElseThrow(() -> new AnimalNotFoundException(animalId));

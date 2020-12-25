@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.jayaprabahar.favouritezoo.repository;
 
 import org.springframework.data.domain.Page;
@@ -24,8 +21,6 @@ import com.jayaprabahar.favouritezoo.model.Room;
  */
 @Repository
 public interface AnimalRepository extends JpaRepository<Animal, Long> {
-
-	Page<Animal> findAllById(Long animalId, Pageable pageable);
 
 	Page<Animal> findAllByRoom(Room room, Pageable pageable);
 

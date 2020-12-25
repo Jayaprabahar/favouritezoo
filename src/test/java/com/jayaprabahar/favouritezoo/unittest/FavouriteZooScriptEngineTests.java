@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.jayaprabahar.favouritezoo.unittest;
 
 import static org.junit.Assert.assertFalse;
@@ -16,7 +13,7 @@ import com.jayaprabahar.favouritezoo.util.FavouriteZooScriptEngine;
 /**
  * <p> Project : favouritezoo </p>
  * <p> Title : FavouriteZooScriptEngineTests.java </p>
- * <p> Description: TODO </p>
+ * <p> Description: Tests FavouriteZooScriptEngine </p>
  * <p> Created: Nov 12, 2020 </p>
  * 
  * @since 1.0.0
@@ -32,10 +29,9 @@ class FavouriteZooScriptEngineTests {
 
 	/**
 	 * Check all mathematical conditions such as <=, >=, == with Nashroom Script Engine
-	 * 
 	 */
 	@Test
-	@DisplayName("Check all mathematical conditions such as <=, >=, == for animal room prefernece")
+	@DisplayName("Check all mathematical conditions such as <=, >=, == for animal room preference")
 	void testScriptEngineEvaluate() {
 		long roomSize = 30;
 		String preferenceType = "<=";

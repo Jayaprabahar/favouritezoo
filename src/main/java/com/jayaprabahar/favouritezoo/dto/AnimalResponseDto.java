@@ -1,16 +1,11 @@
-/**
- * 
- */
 package com.jayaprabahar.favouritezoo.dto;
-
-import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-
 import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import lombok.Value;
+
+import java.time.Instant;
 
 /**
  * <p> Project : favouritezoo </p>
@@ -23,15 +18,14 @@ import lombok.Data;
  * @author <a href="mailto:jpofficial@gmail.com">Jayaprabahar</a>
  *
  */
-@Data
-@Builder
+@Value
 @AllArgsConstructor
 @JsonInclude(Include.NON_EMPTY)
 public class AnimalResponseDto {
 
-	private String title;
+	String title;
 
-	private LocalDateTime added;
+	Instant added;
 
-	private LocalDateTime located;
+	Instant located;
 }

@@ -1,20 +1,16 @@
-/**
- * 
- */
 package com.jayaprabahar.favouritezoo.controller;
 
-import static org.junit.Assert.assertTrue;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import java.util.List;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jayaprabahar.favouritezoo.errorhandling.AnimalNotFoundException;
+import com.jayaprabahar.favouritezoo.errorhandling.FavouriteNotFoundException;
+import com.jayaprabahar.favouritezoo.errorhandling.RoomNotFoundException;
+import com.jayaprabahar.favouritezoo.model.Animal;
+import com.jayaprabahar.favouritezoo.model.Favourite;
+import com.jayaprabahar.favouritezoo.model.Room;
+import com.jayaprabahar.favouritezoo.service.FavouriteService;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.json.AutoConfigureJsonTesters;
@@ -25,19 +21,18 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jayaprabahar.favouritezoo.errorhandling.AnimalNotFoundException;
-import com.jayaprabahar.favouritezoo.errorhandling.FavouriteNotFoundException;
-import com.jayaprabahar.favouritezoo.errorhandling.RoomNotFoundException;
-import com.jayaprabahar.favouritezoo.model.Animal;
-import com.jayaprabahar.favouritezoo.model.Favourite;
-import com.jayaprabahar.favouritezoo.model.Room;
-import com.jayaprabahar.favouritezoo.service.FavouriteService;
+import java.util.List;
+
+import static org.junit.Assert.assertTrue;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * <p> Project : favouritezoo </p>
  * <p> Title : FavouriteControllerTests.java </p>
- * <p> Description: TODO </p>
+ * <p> Description: Tests FavouriteController class </p>
  * <p> Created: Nov 13, 2020 </p>
  * 
  * @since 1.0.0
@@ -53,9 +48,6 @@ class FavouriteControllerTests {
 	@Autowired
 	private MockMvc mockMvc;
 	
-	@InjectMocks
-	private FavouriteController favouriteController;
-	
 	@MockBean
 	private FavouriteService favouriteService;
 	
@@ -70,7 +62,7 @@ class FavouriteControllerTests {
 		Room room = Room.builder().title("Small Room").size(25).build();
 		Animal animal = Animal.builder().title("Cow").type("<=").preference(30).build();
 		
-		Mockito.when(favouriteService.findFavourite(1l, 1l)).thenReturn(new Favourite(room, animal));
+		Mockito.when(favouriteService.findFavourite(1L, 1L)).thenReturn(new Favourite(room, animal));
 
 		mockMvc.perform(get("/favourite/rooms/1/animals/1"))
 			.andExpect(status().isOk())
@@ -85,19 +77,19 @@ class FavouriteControllerTests {
 	
 	@Test
 	void should_NotFoundException_When_NoNeededExists() throws Exception {
-		Mockito.when(favouriteService.findFavourite(1l, 1l)).thenThrow(new RoomNotFoundException(1l));
+		Mockito.when(favouriteService.findFavourite(1L, 1L)).thenThrow(new RoomNotFoundException(1L));
 
 		mockMvc.perform(get("/favourite/rooms/1/animals/1").contentType(MediaType.APPLICATION_JSON))
-		      .andExpect(status().isNotFound())
+		      .andExpect(status().isBadRequest())
 		      .andExpect(result -> assertTrue(result.getResolvedException() instanceof RoomNotFoundException));
 		
-		Mockito.when(favouriteService.findFavourite(2l, 2l)).thenThrow(new AnimalNotFoundException(2l));
+		Mockito.when(favouriteService.findFavourite(2L, 2L)).thenThrow(new AnimalNotFoundException(2L));
 
 		mockMvc.perform(get("/favourite/rooms/2/animals/2").contentType(MediaType.APPLICATION_JSON))
-		      .andExpect(status().isNotFound())
+		      .andExpect(status().isBadRequest())
 		      .andExpect(result -> assertTrue(result.getResolvedException() instanceof AnimalNotFoundException));
 		
-		Mockito.when(favouriteService.findFavourite(3l, 3l)).thenThrow(new FavouriteNotFoundException(3l, 3l));
+		Mockito.when(favouriteService.findFavourite(3L, 3L)).thenThrow(new FavouriteNotFoundException(3L, 3L));
 
 		mockMvc.perform(get("/favourite/rooms/3/animals/3").contentType(MediaType.APPLICATION_JSON))
 		      .andExpect(status().isNotFound())
@@ -106,7 +98,7 @@ class FavouriteControllerTests {
 	
 	@Test
 	void should_GetRoomNames_When_FavouriteRoomsForAnimalExists() throws Exception {
-		Mockito.when(favouriteService.getFavouriteRoomsByAnimalId(5l)).thenReturn(List.of("Yellow"));
+		Mockito.when(favouriteService.getFavouriteRoomsByAnimalId(5L)).thenReturn(List.of("Yellow"));
 		
 		mockMvc.perform(get("/favourite/animals/5"))
 			.andExpect(status().isOk())
@@ -115,11 +107,11 @@ class FavouriteControllerTests {
 	}
 	
 	@Test
-	void should_GenericResponse_When_FavouriteDeleted() throws Exception {
-		Mockito.doNothing().when(favouriteService).deleteFavourite(5l, 6l);
+	void should_StringResponse_When_FavouriteDeleted() throws Exception {
+		Mockito.doNothing().when(favouriteService).deleteFavourite(5L, 6L);
 		
 		mockMvc.perform(delete("/favourite/rooms/5/animals/6"))
-			.andExpect(status().isOk())
+			.andExpect(status().isNoContent())
 			.andExpect(jsonPath("$.message", Matchers.equalTo("Favourite room is unassigned for room 5 and animal 6")));
 	}
 	

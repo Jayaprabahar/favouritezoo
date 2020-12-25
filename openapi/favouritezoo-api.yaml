@@ -856,25 +856,6 @@
   },
   "components": {
     "schemas": {
-      "GenericResponseDto": {
-        "type": "object",
-        "properties": {
-          "timestamp": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "status": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "error": {
-            "type": "string"
-          },
-          "message": {
-            "type": "string"
-          }
-        }
-      },
       "Pageable": {
         "type": "object",
         "properties": {

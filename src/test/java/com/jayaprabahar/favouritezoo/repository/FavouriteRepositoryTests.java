@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.jayaprabahar.favouritezoo.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -29,7 +26,7 @@ import com.jayaprabahar.favouritezoo.model.Room;
 /**
  * <p> Project : favouritezoo </p>
  * <p> Title : FavouriteRepositoryTests.java </p>
- * <p> Description: TODO </p>
+ * <p> Description: Tests FavouriteRepository Class </p>
  * <p> Created: Nov 12, 2020 </p>
  * 
  * @since 1.0.0
@@ -60,7 +57,7 @@ class FavouriteRepositoryTests {
 	@Order(2)
 	void whenNoEntries_thenResultIsEmpty() {
 		assertTrue(favouriteRepository.findAll().isEmpty());
-		assertTrue(favouriteRepository.findById(1l).isEmpty());
+		assertTrue(favouriteRepository.findById(1L).isEmpty());
 	}
 
 	@Test

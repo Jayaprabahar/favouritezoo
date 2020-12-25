@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.jayaprabahar.favouritezoo.service;
 
 import java.util.List;
@@ -27,7 +24,7 @@ import com.jayaprabahar.favouritezoo.repository.RoomRepository;
 @Service
 public class RoomService {
 
-	private RoomRepository roomRepository;
+	private final RoomRepository roomRepository;
 
 	/**
 	 * 
@@ -39,8 +36,8 @@ public class RoomService {
 	/**
 	 * Finds all rooms and performs sorting if provided
 	 * 
-	 * @param pageable
-	 * @return
+	 * @param pageable Pageable
+	 * @return List of Rooms
 	 */
 	public List<Room> findAllRooms(Pageable pageable) {
 		return roomRepository.findAll(pageable).toList();
@@ -49,8 +46,8 @@ public class RoomService {
 	/**
 	 * Finds rooms by id, if exist
 	 * 
-	 * @param roomId
-	 * @return
+	 * @param roomId Room Id
+	 * @return Room
 	 */
 	public Room findByRoomId(Long roomId) {
 		return roomRepository.findById(roomId).orElseThrow(() -> new RoomNotFoundException(roomId));
@@ -59,8 +56,8 @@ public class RoomService {
 	/**
 	 * Creates room base on Room request DTO
 	 * 
-	 * @param newRoomDto
-	 * @return Room
+	 * @param newRoomDto New RoomDto
+	 * @return Room Created Room entity
 	 */
 	public Room createRoom(RoomDto newRoomDto) {
 		return roomRepository.save(Room.builder().title(newRoomDto.getTitle()).size(newRoomDto.getSize()).build());
@@ -69,9 +66,9 @@ public class RoomService {
 	/**
 	 * Updates room base on Room request DTO
 	 * 
-	 * @param id
-	 * @param newRoomDto
-	 * @return Room
+	 * @param id Room Id
+	 * @param newRoomDto new RoomDto
+	 * @return Room Updated Room entity
 	 */
 	public Room updateRoom(Long id, RoomDto newRoomDto) {
 		return roomRepository.findById(id).map(room -> {
@@ -84,12 +81,13 @@ public class RoomService {
 	/**
 	 * Deletes room base on roomId
 	 * 
-	 * @param roomId
+	 * @param roomId Room Id
 	 */
 	public void deleteRoom(Long roomId) {
-		roomRepository.findById(roomId).ifPresentOrElse(e -> roomRepository.delete(e), () -> {
-			throw new RoomNotFoundException(roomId);
-		});
+		roomRepository
+				.findById(roomId)
+				.ifPresentOrElse(roomRepository::delete,
+				() -> { throw new RoomNotFoundException(roomId); });
 	}
 
 }

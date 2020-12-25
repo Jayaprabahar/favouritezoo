@@ -1,12 +1,8 @@
-/**
- * 
- */
 package com.jayaprabahar.favouritezoo.controller;
 
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -31,9 +27,8 @@ import com.jayaprabahar.favouritezoo.service.AnimalRoomService;
 @RestController
 public class AnimalRoomController {
 
-	private AnimalRoomService animalRoomService;
+	private final AnimalRoomService animalRoomService;
 
-	@Autowired
 	public AnimalRoomController(AnimalRoomService animalRoomService) {
 		this.animalRoomService = animalRoomService;
 	}
@@ -41,8 +36,8 @@ public class AnimalRoomController {
 	/**
 	 * Places the animal into the room
 	 * 
-	 * @param roomId
-	 * @param animalId
+	 * @param roomId Long
+	 * @param animalId Long
 	 * @return Animal - Updated animal object
 	 */
 	@PatchMapping("/rooms/{roomId}/animals/{animalId}")
@@ -51,11 +46,11 @@ public class AnimalRoomController {
 	}
 
 	/**
-	 * Moves one animal from one room to another
+	 * Moves an animal from one room to another. If animal is not already present in the original room, then exception is thrown
 	 * 
-	 * @param roomId
-	 * @param animalId
-	 * @param newRoomId
+	 * @param roomId Long
+	 * @param animalId Long
+	 * @param newRoomId Long
 	 * @return Animal - Updated animal object
 	 */
 	@PatchMapping("/rooms/{roomId}/animals/{animalId}/{newRoomId}")
@@ -67,7 +62,7 @@ public class AnimalRoomController {
 	/**
 	 * Removes one animal from one room to another
 	 * 
-	 * @param animalId
+	 * @param animalId Long
 	 * @return Animal - Updated animal object
 	 */
 	@PatchMapping("/rooms/animals/{animalId}")
@@ -78,8 +73,8 @@ public class AnimalRoomController {
 	/**
 	 * List All the Animals In Room
 	 * 
-	 * @param roomId
-	 * @param pageable
+	 * @param roomId Long
+	 * @param pageable Pageable
 	 * @return List<AnimalResponseDto> - List of AnimalResponseDto
 	 */
 	@GetMapping("/rooms/{roomId}/animals")

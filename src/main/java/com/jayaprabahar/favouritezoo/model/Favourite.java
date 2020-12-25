@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.jayaprabahar.favouritezoo.model;
 
 import javax.persistence.Entity;
@@ -48,8 +45,8 @@ public class Favourite {
 	private Animal animal;
 
 	/**
-	 * @param room2
-	 * @param animal2
+	 * @param room Room object
+	 * @param animal Animal object
 	 */
 	public Favourite(Room room, Animal animal) {
 		this.room = room;

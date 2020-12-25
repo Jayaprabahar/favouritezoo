@@ -1,13 +1,9 @@
-/**
- * 
- */
 package com.jayaprabahar.favouritezoo.controller;
 
 import java.util.List;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,14 +19,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.jayaprabahar.favouritezoo.dto.AnimalDto;
 import com.jayaprabahar.favouritezoo.dto.AnimalResponseDto;
-import com.jayaprabahar.favouritezoo.dto.GenericResponseDto;
 import com.jayaprabahar.favouritezoo.model.Animal;
 import com.jayaprabahar.favouritezoo.service.AnimalService;
 
 /**
  * <p> Project : favouritezoo </p>
  * <p> Title : AnimalController.java </p>
- * <p> Description: Controller class wrt Animal table </p>
+ * <p> Description: Controller class for Animal table related endpoints </p>
  * <p> Created: Nov 10, 2020 </p>
  * 
  * @since 1.0.0
@@ -42,12 +37,11 @@ import com.jayaprabahar.favouritezoo.service.AnimalService;
 @RequestMapping("/animals")
 public class AnimalController {
 
-	private AnimalService animalService;
+	private final AnimalService animalService;
 
 	/**
 	 * 
 	 */
-	@Autowired
 	public AnimalController(AnimalService animalService) {
 		this.animalService = animalService;
 	}
@@ -55,7 +49,7 @@ public class AnimalController {
 	/**
 	 * Finds animal by id
 	 * 
-	 * @param animalId
+	 * @param animalId Long Animal Id
 	 * @return Animal - Animal Object or exception is thrown
 	 */
 	@GetMapping("/{animalId}")
@@ -64,9 +58,9 @@ public class AnimalController {
 	}
 
 	/**
-	 * Creates Animal object or exception is thrown if id is not found
+	 * Creates Animal object
 	 * 
-	 * @param newAnimalDto
+	 * @param newAnimalDto AnimalDto
 	 * @return Animal - Animal Object or exception is thrown
 	 */
 	@PostMapping
@@ -78,9 +72,9 @@ public class AnimalController {
 	/**
 	 * Updates Animal object or exception is thrown if id is not found
 	 * 
-	 * @param animalId
-	 * @param newAnimalDto
-	 * @return Animal - Animal Object or exception is thrown
+	 * @param animalId Long
+	 * @param newAnimalDto AnimalDto
+	 * @return Animal - Animal Object
 	 */
 	@PutMapping("/{animalId}")
 	@ResponseStatus(HttpStatus.ACCEPTED)
@@ -91,20 +85,19 @@ public class AnimalController {
 	/**
 	 * Deletes Animal object or exception is thrown if id is not found
 	 * 
-	 * @param animalId
+	 * @param animalId Long
 	 * @return ResponseEntity<GenericResponseDto>
 	 */
 	@DeleteMapping("/{animalId}")
-	public ResponseEntity<GenericResponseDto> deleteAnimal(@PathVariable final Long animalId) {
+	public ResponseEntity<String> deleteAnimal(@PathVariable final Long animalId) {
 		animalService.deleteAnimal(animalId);
-		return new ResponseEntity<>(GenericResponseDto.builder()
-				.message(String.format("Animal with id %d is deleted", animalId)).status(200).build(), HttpStatus.OK);
+		return new ResponseEntity<>(String.format("Animal with id %d is deleted", animalId), HttpStatus.NO_CONTENT);
 	}
 
 	/**
-	 * Lists All Animals in with sorting option
+	 * Lists All Animals with sorting option
 	 * 
-	 * @param pageable
+	 * @param pageable Pageable api
 	 * @return List<AnimalResponseDto>
 	 */
 	@GetMapping

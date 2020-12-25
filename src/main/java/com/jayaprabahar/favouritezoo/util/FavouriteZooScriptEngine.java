@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.jayaprabahar.favouritezoo.util;
 
 import javax.script.ScriptEngine;
@@ -24,10 +21,10 @@ import org.springframework.stereotype.Component;
 public class FavouriteZooScriptEngine {
 
 	/**
-	 * Loads the nashorn javascript engine and evalautes it.
+	 * Loads the nashorn javascript engine and evaluate it.
 	 * Performance of this component is not measured
 	 * 
-	 * @param script
+	 * @param script NashRoom script String
 	 * @return boolean - TRUE if the evaluation is success
 	 */
 	public boolean evaluateBooleanScripts(String script) {

@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.jayaprabahar.favouritezoo.service;
 
 import java.util.List;
@@ -29,13 +26,10 @@ import com.jayaprabahar.favouritezoo.repository.AnimalRepository;
 @Service
 public class AnimalService {
 
-	private AnimalRepository animalRepository;
+	private final AnimalRepository animalRepository;
 
 	/**
-	 * 
-	 */
-	/**
-	 * @param animalRepository
+	 * @param animalRepository AnimalRepository
 	 */
 	public AnimalService(AnimalRepository animalRepository) {
 		this.animalRepository = animalRepository;
@@ -44,8 +38,8 @@ public class AnimalService {
 	/**
 	 * Creates Animal or throw exception
 	 * 
-	 * @param newAnimalDto
-	 * @return Animal
+	 * @param newAnimalDto AnimalDto
+	 * @return Animal Updated Animal
 	 */
 	public Animal createAnimal(AnimalDto newAnimalDto) {
 		return animalRepository.save(Animal.builder().title(newAnimalDto.getTitle()).type(newAnimalDto.getType())
@@ -54,9 +48,9 @@ public class AnimalService {
 
 	/**
 	 * Updates Animal entity or throw exception
-	 * @param id
-	 * @param newAnimalDto
-	 * @return
+	 * @param id Updated Animal Id
+	 * @param newAnimalDto  Updated AnimalDto
+	 * @return Updated Animal
 	 */
 	public Animal updateAnimal(Long id, AnimalDto newAnimalDto) {
 		return animalRepository.findById(id).map(animal -> {
@@ -69,10 +63,10 @@ public class AnimalService {
 
 	/**
 	 * Deletes Animal entity or throw exception
-	 * @param id
+	 * @param id Animal Id
 	 */
 	public void deleteAnimal(Long id) {
-		animalRepository.findById(id).ifPresentOrElse(e -> animalRepository.delete(e), () -> {
+		animalRepository.findById(id).ifPresentOrElse(animalRepository::delete, () -> {
 			throw new AnimalNotFoundException(id);
 		});
 	}
@@ -80,8 +74,8 @@ public class AnimalService {
 	/**
 	 * Finds animal by Id
 	 * 
-	 * @param id
-	 * @return Animal
+	 * @param id Animal Long Id
+	 * @return Animal Updated
 	 */
 	public Animal findAnimalById(Long id) {
 		return animalRepository.findById(id).orElseThrow(() -> new AnimalNotFoundException(id));
@@ -90,13 +84,12 @@ public class AnimalService {
 	/**
 	 * Finds All Animals and returns based on pageable sorting
 	 * 
-	 * @param pageable
-	 * @return
+	 * @param pageable Pageable
+	 * @return List of AnimalResponseDto
 	 */
 	public List<AnimalResponseDto> findAllAnimals(Pageable pageable) {
 		return animalRepository.findAll(pageable).toList().stream()
-				.map(e -> AnimalResponseDto.builder().title(e.getTitle()).added(e.getAdded()).build())
-				.collect(Collectors.toList());
+				.map(Animal::toAnimalResponseDto).collect(Collectors.toList());
 	}
 
 }
